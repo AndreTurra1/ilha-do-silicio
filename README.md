@@ -17,10 +17,19 @@ Navegador → GitHub Pages (index.html) → POST → Apps Script (Web App) → G
 
 ## Como colocar no ar
 
-### 1. Criar a planilha
+### 0. Preencher o e-mail de contato (LGPD)
 
-1. Abra [sheets.new](https://sheets.new) e renomeie para **Ilha do Silício — Cadastros**.
-2. Não precisa criar aba nem cabeçalho: o script faz isso sozinho no primeiro envio.
+Em [`privacidade.html`](privacidade.html), troque `[SEU E-MAIL AQUI]` por um e-mail real e apague o
+bloco de aviso laranja. A lei exige um canal para pedidos de acesso e exclusão — sem isso, não
+divulgue a página.
+
+### 1. A planilha
+
+Já está definida no script, pelo ID:
+[Ilha do Silício — Cadastros](https://docs.google.com/spreadsheets/d/1z8oxhUYd0h_mUDu35_S9UFWhjOS2y2C4N-IWb53JX6o/edit).
+Não precisa criar aba nem cabeçalho: o script faz isso sozinho no primeiro envio.
+
+Para trocar de planilha, mude a constante `PLANILHA_ID` no topo do `Codigo.gs`.
 
 ### 2. Publicar o Apps Script
 
@@ -73,11 +82,19 @@ o caminho é trocar por um Cloudflare Turnstile — grátis também.
 
 **Backup.** Arquivo › Fazer download › CSV na própria planilha.
 
+**Pedido de exclusão (LGPD).** Apague a linha da pessoa na planilha e confirme por e-mail.
+As colunas `Aceitou os termos` e `Versão dos termos` existem para provar o consentimento —
+não apague essas colunas.
+
+**Link do grupo.** Está na constante `GRUPO_WHATSAPP`, no `<script>` do `index.html`.
+Se o convite for revogado, é lá que se troca.
+
 ---
 
 ## Estrutura
 
 ```
-index.html            página + formulário + validação (arquivo único, sem dependências)
+index.html             página + formulário + validação (arquivo único, sem dependências)
+privacidade.html       termos de uso e política de privacidade (LGPD)
 apps-script/Codigo.gs  script que recebe o POST e grava a linha
 ```

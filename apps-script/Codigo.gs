@@ -4,6 +4,10 @@
  * Ver README.md na raiz do projeto para o passo a passo.
  */
 
+// Planilha de destino: "Ilha do Silício — Cadastros".
+// https://docs.google.com/spreadsheets/d/1z8oxhUYd0h_mUDu35_S9UFWhjOS2y2C4N-IWb53JX6o/edit
+const PLANILHA_ID = '1z8oxhUYd0h_mUDu35_S9UFWhjOS2y2C4N-IWb53JX6o';
+
 // Nome da aba onde os cadastros são gravados (criada sozinha se não existir).
 const ABA = 'Cadastros';
 
@@ -13,7 +17,7 @@ const NOTIFICAR_EMAIL = '';
 const COLUNAS = [
   'Data/Hora', 'Nome', 'E-mail', 'WhatsApp', 'Área', 'Empresa/Projeto',
   'Frequência', 'Instagram/LinkedIn', 'Como conheceu', 'Sobre',
-  'Entrar no grupo', 'Origem'
+  'Entrar no grupo', 'Aceitou os termos', 'Versão dos termos', 'Origem'
 ];
 
 function doPost(e) {
@@ -26,6 +30,9 @@ function doPost(e) {
     if (d.website) return json({ ok: true });
 
     if (!d.nome || !d.email) return json({ ok: false, erro: 'nome e e-mail obrigatórios' });
+
+    // Consentimento é a base legal do tratamento (LGPD art. 7º, I): sem aceite, não grava.
+    if (d.aceite !== 'Sim') return json({ ok: false, erro: 'aceite dos termos obrigatório' });
 
     // Trava contra duas gravações simultâneas montarem a mesma linha.
     const lock = LockService.getScriptLock();
@@ -44,6 +51,8 @@ function doPost(e) {
         String(d.origem     || '').slice(0, 300),
         String(d.sobre      || '').slice(0, 2000),
         String(d.grupo      || '').slice(0, 10),
+        String(d.aceite     || '').slice(0, 10),
+        String(d.termos     || '').slice(0, 40),
         String(d.origemUrl  || '').slice(0, 300)
       ]);
     } finally {
@@ -81,7 +90,8 @@ function doGet() {
 }
 
 function getAba() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  // openById em vez de getActiveSpreadsheet: funciona mesmo com o script avulso.
+  const ss = SpreadsheetApp.openById(PLANILHA_ID);
   let aba = ss.getSheetByName(ABA) || ss.insertSheet(ABA);
 
   if (aba.getLastRow() === 0) {

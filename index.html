@@ -100,13 +100,10 @@
   h1{
     font-size:clamp(52px,15vw,104px);
     line-height:.92;letter-spacing:-.045em;
-    margin:26px 0 20px;font-weight:800;
+    margin:26px 0 20px;font-weight:800;color:#f4f8fc;
+    text-shadow:0 2px 40px rgba(3,10,21,.55);
   }
-  h1 .l2{
-    display:block;
-    background:linear-gradient(100deg,var(--aqua) 8%,#bff0e4 34%,var(--ambar) 72%,var(--coral));
-    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
-  }
+  h1 .l2{display:block}
   .lead{
     color:#c3d5e4;font-size:17.5px;margin:0 auto;max-width:44ch;
     text-shadow:0 1px 20px rgba(4,16,29,.7);
@@ -164,6 +161,13 @@
 
   .check{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#b6c8d8;cursor:pointer}
   .check input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--aqua)}
+  .check a{color:var(--aqua);text-underline-offset:3px}
+  .check a:hover{color:#8ff0e2}
+  .consent{
+    border:1px solid rgba(160,214,230,.14);background:rgba(255,255,255,.03);
+    border-radius:11px;padding:14px 15px;
+  }
+  .consent.ruim{border-color:var(--danger);background:rgba(255,122,122,.06)}
 
   button{
     width:100%;margin-top:8px;border:0;border-radius:11px;padding:15px 18px;
@@ -193,6 +197,16 @@
   }
   .done h2{margin:0 0 8px;font-size:25px;letter-spacing:-.025em}
   .done p{color:#b6c8d8;margin:0 auto;max-width:40ch}
+  .zap{
+    display:block;max-width:340px;margin:24px auto 0;text-decoration:none;text-align:center;
+    background:#25d366;color:#062b12;border-radius:11px;padding:15px 18px;
+    font-size:16px;font-weight:800;letter-spacing:.01em;
+    box-shadow:0 12px 34px -12px rgba(37,211,102,.6);
+    transition:filter .18s,transform .12s;
+  }
+  .zap:hover{filter:brightness(1.06)}
+  .zap:active{transform:translateY(1px)}
+  .redir{font-size:13.5px;color:#7b91a6;margin:14px auto 0}
 
   footer{text-align:center;color:#63798d;font-size:13px;padding:0 0 44px}
   footer .estrela{color:var(--ambar);opacity:.8}
@@ -360,6 +374,20 @@
         </label>
       </div>
 
+      <div class="row">
+        <div class="consent" id="consent">
+          <label class="check">
+            <input type="checkbox" id="aceite" name="aceite" required>
+            <span>
+              Autorizo a Ilha do Silício a guardar e usar os dados acima para entrar em
+              contato comigo, e declaro que li os
+              <a href="privacidade.html" target="_blank" rel="noopener">termos de uso e a política de privacidade</a>.
+            </span>
+          </label>
+          <div class="err" data-for="aceite">Precisa autorizar pra gente poder guardar teus dados e te chamar.</div>
+        </div>
+      </div>
+
       <!-- anti-spam: humano não vê, bot preenche -->
       <div class="hp" aria-hidden="true">
         <label for="website">Não preencha</label>
@@ -373,7 +401,9 @@
     <div class="done" id="done">
       <div class="tick">✓</div>
       <h2>Cadastro enviado!</h2>
-      <p>Recebemos teus dados. Logo alguém da Ilha entra em contato pelo WhatsApp. Até já 🤙</p>
+      <p>Agora entra no grupo do WhatsApp pra já cair no meio da conversa. Até já 🤙</p>
+      <a class="zap" id="linkGrupo" href="#" target="_blank" rel="noopener">ENTRAR NO GRUPO DO WHATSAPP</a>
+      <p class="redir">Te levamos pra lá em <span id="conta">5</span>s…</p>
     </div>
 
     <footer>
@@ -386,6 +416,12 @@
 <script>
 // ── Cole aqui a URL do Web App do Google Apps Script (termina em /exec) ──
 const ENDPOINT = "COLE_AQUI_A_URL_DO_APPS_SCRIPT";
+
+// Convite do grupo. Pós-cadastro a pessoa é levada pra cá.
+const GRUPO_WHATSAPP = "https://chat.whatsapp.com/GilRNubPA9cH0ph244mERs";
+
+// Versão dos termos aceitos — registrada na planilha junto com o cadastro.
+const TERMOS_VERSAO = "v1 (12/08/2026)";
 
 const form    = document.getElementById("form");
 const btn     = document.getElementById("btn");
@@ -407,6 +443,7 @@ function setErr(name, bad) {
   const box   = form.querySelector(`.err[data-for="${name}"]`);
   field.setAttribute("aria-invalid", bad ? "true" : "false");
   if (box) box.classList.toggle("show", bad);
+  if (name === "aceite") document.getElementById("consent").classList.toggle("ruim", bad);
   return !bad;
 }
 
@@ -419,6 +456,7 @@ function validate() {
   ok = setErr("area",       !v("area")) && ok;
   ok = setErr("frequencia", !v("frequencia")) && ok;
   ok = setErr("origem",     v("origem").length < 2) && ok;
+  ok = setErr("aceite",     !form.elements.aceite.checked) && ok;
   return ok;
 }
 
@@ -448,6 +486,8 @@ form.addEventListener("submit", async e => {
     origem:     form.elements.origem.value.trim(),
     sobre:      form.elements.sobre.value.trim(),
     grupo:      form.elements.grupo.checked ? "Sim" : "Não",
+    aceite:     form.elements.aceite.checked ? "Sim" : "Não",
+    termos:     TERMOS_VERSAO,
     website:    form.elements.website.value, // honeypot
     origemUrl:  location.href
   };
@@ -481,7 +521,20 @@ form.addEventListener("submit", async e => {
 
     form.style.display = "none";
     done.classList.add("show");
+    document.getElementById("linkGrupo").href = GRUPO_WHATSAPP;
     done.scrollIntoView({ behavior: "smooth", block: "center" });
+
+    // leva pro grupo, mas com o botão à mão caso o redirect seja bloqueado
+    const conta = document.getElementById("conta");
+    let resta = 5;
+    const tic = setInterval(() => {
+      resta -= 1;
+      conta.textContent = resta;
+      if (resta <= 0) {
+        clearInterval(tic);
+        location.href = GRUPO_WHATSAPP;
+      }
+    }, 1000);
   } catch (err) {
     btn.disabled = false;
     btn.textContent = "Fazer meu cadastro";
