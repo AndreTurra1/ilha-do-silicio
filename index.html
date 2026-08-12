@@ -312,16 +312,39 @@ form.addEventListener("submit", async e => {
     origemUrl:  location.href
   };
 
+  if (!/^https:\/\/script\.google\.com\/.*\/exec$/.test(ENDPOINT)) {
+    formerr.textContent = "Formulário ainda não configurado: falta colar a URL do Apps Script em ENDPOINT (veja o README).";
+    formerr.classList.add("show");
+    return;
+  }
+
   btn.disabled = true;
   btn.textContent = "Enviando…";
 
+  // text/plain evita o preflight CORS do Apps Script
+  const req = extra => fetch(ENDPOINT, Object.assign({
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  }, extra));
+
   try {
-    // text/plain evita o preflight CORS do Apps Script
-    await fetch(ENDPOINT, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify(payload)
-    });
+    let res;
+    try {
+      res = await req();
+    } catch (corsErr) {
+      // Alguns ambientes barram a leitura da resposta do Apps Script.
+      // O POST em si chega — reenviar como no-cors evita falso negativo e cadastro duplicado.
+      await req({ mode: "no-cors" });
+      res = null;
+    }
+
+    if (res) {
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const body = await res.json().catch(() => null);
+      if (body && body.ok === false) throw new Error(body.erro || "recusado");
+    }
+
     form.style.display = "none";
     done.classList.add("show");
     done.scrollIntoView({ behavior: "smooth", block: "center" });
