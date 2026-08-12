@@ -3,314 +3,285 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ilha do Silício — o coworking de quem constrói, em Floripa</title>
-<meta name="description" content="Você trabalha? Então essa é a única pergunta que a gente faz na porta. O coworking das maiores mentes da ilha, em Florianópolis.">
-<meta property="og:title" content="Você trabalha? — Ilha do Silício">
-<meta property="og:description" content="O coworking das maiores mentes da ilha. Encontros semanais, grupo no WhatsApp e o Cérebro da Ilha. Florianópolis.">
+<title>Ilha do Silício — Coworking em Floripa</title>
+<meta name="description" content="Cadastro da Ilha do Silício, o coworking de quem constrói coisas em Florianópolis.">
+<meta property="og:title" content="Ilha do Silício — Coworking em Floripa">
+<meta property="og:description" content="Um grupo de amigos que trabalha junto em Florianópolis. Faça seu cadastro.">
 <meta property="og:type" content="website">
+<meta name="theme-color" content="#050d18">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
 <style>
   :root{
-    --bg:#080b10; --bg-soft:#0e131b; --card:#111823;
-    --line:#1e2836; --line-strong:#2b3a4d;
-    --txt:#e8eef6; --txt-dim:#8b9bb0;
-    --accent:#2de2a3; --accent-2:#4ea8ff; --danger:#ff6b6b;
-    --radius:14px;
+    --noite:#050d18;
+    --mar-fundo:#061a26;
+    --mar:#0a2b3a;
+    --agua:#0d3547;
+    --areia:#f3e2cd;
+    --txt:#eef4fa;
+    --txt-dim:#93a8bd;
+    --aqua:#4fe3d0;
+    --ambar:#ffb45c;
+    --coral:#ff7d5c;
+    --danger:#ff7a7a;
+    --radius:16px;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
-  html{scroll-behavior:smooth}
   body{
-    background:var(--bg); color:var(--txt);
+    background:var(--noite);
+    color:var(--txt);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.6; -webkit-font-smoothing:antialiased;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  body::before{
-    content:""; position:fixed; inset:0; z-index:-1;
+
+  /* ============================================================
+     CENA — amanhecer na ilha (céu → sol → ponte → ondas → água)
+     ============================================================ */
+  .cena{position:relative;isolation:isolate}
+  .ceu{
+    position:absolute;inset:0;z-index:-3;
     background:
-      radial-gradient(900px 500px at 15% -5%, rgba(45,226,163,.14), transparent 60%),
-      radial-gradient(800px 500px at 90% 3%, rgba(78,168,255,.13), transparent 60%);
+      radial-gradient(105% 62% at 50% 90%, rgba(255,166,88,.42) 0%, rgba(255,110,80,.20) 30%, transparent 66%),
+      radial-gradient(90% 60% at 82% 16%, rgba(79,227,208,.10), transparent 60%),
+      linear-gradient(180deg, #030a15 0%, #05172a 28%, #0a2b41 54%, #144b5f 78%, #24697a 100%);
   }
-  .wrap{max-width:660px;margin:0 auto;padding:0 20px}
-  section{padding:56px 0;border-top:1px solid var(--line)}
-  section:first-of-type{border-top:0}
+  /* granulado sutil pra tirar o "banding" do degradê */
+  .ceu::after{
+    content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .circuito{position:absolute;top:0;left:0;width:100%;height:74%;z-index:-2;opacity:.3}
+  .sol{
+    position:absolute;z-index:-2;left:50%;bottom:46px;transform:translateX(-50%);
+    width:min(300px,64vw);aspect-ratio:1;border-radius:50%;
+    mix-blend-mode:screen;
+    background:radial-gradient(circle at 50% 50%,
+      #fff3d6 0%,
+      #ffd79a 18%,
+      #ffab5e 34%,
+      #ff7f45 48%,
+      rgba(255,96,58,.42) 62%,
+      rgba(255,80,50,.14) 74%,
+      rgba(255,80,50,0) 82%);
+  }
+  .ponte{position:absolute;left:0;width:100%;height:122px;bottom:84px;z-index:-1}
+
+  /* ondas */
+  .ondas{position:absolute;bottom:0;left:0;width:100%;height:132px;z-index:1;overflow:hidden}
+  .ondas svg{position:absolute;bottom:0;left:0;width:200%;height:100%}
+  .onda1{animation:desliza 21s linear infinite;opacity:.55}
+  .onda2{animation:desliza 15s linear infinite reverse;opacity:.75}
+  .onda3{animation:desliza 11s linear infinite}
+  @keyframes desliza{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+  @media (prefers-reduced-motion:reduce){
+    .onda1,.onda2,.onda3{animation:none}
+  }
+
+  /* ============================================================
+     CONTEÚDO
+     ============================================================ */
+  .wrap{max-width:600px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+  .hero{
+    position:relative;z-index:2;max-width:640px;margin:0 auto;text-align:center;
+    padding:clamp(56px,13vh,104px) 20px clamp(340px,42vh,410px);
+  }
 
   .badge{
     display:inline-flex;align-items:center;gap:8px;
-    font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;
-    color:var(--accent); background:rgba(45,226,163,.09);
-    border:1px solid rgba(45,226,163,.25);
-    padding:6px 12px;border-radius:999px;
+    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
+    color:#ffdcb4;
+    background:rgba(255,180,92,.1);
+    border:1px solid rgba(255,180,92,.3);
+    backdrop-filter:blur(8px);
+    padding:7px 15px;border-radius:999px;
   }
   h1{
-    font-size:clamp(46px,12vw,84px); line-height:.98; letter-spacing:-.04em;
-    margin:22px 0 20px; font-weight:800;
-    background:linear-gradient(120deg,#fff 25%,var(--accent) 70%,var(--accent-2));
+    font-size:clamp(52px,15vw,104px);
+    line-height:.92;letter-spacing:-.045em;
+    margin:26px 0 20px;font-weight:800;
+  }
+  h1 .l2{
+    display:block;
+    background:linear-gradient(100deg,var(--aqua) 8%,#bff0e4 34%,var(--ambar) 72%,var(--coral));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   }
-  h2{font-size:clamp(25px,5.4vw,33px);line-height:1.15;letter-spacing:-.025em;margin:0 0 20px;font-weight:800}
-  h3{font-size:18px;margin:0 0 6px;letter-spacing:-.01em;font-weight:700}
-  p{margin:0 0 16px;color:var(--txt-dim);font-size:17px}
-  p.big{font-size:19px;color:var(--txt)}
-  strong{color:var(--txt);font-weight:700}
-  .em{color:var(--accent);font-weight:700}
-  .kicker{
-    font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--accent);font-weight:700;margin-bottom:12px
+  .lead{
+    color:#c3d5e4;font-size:17.5px;margin:0 auto;max-width:44ch;
+    text-shadow:0 1px 20px rgba(4,16,29,.7);
   }
-  .hero{padding:64px 0 52px}
-  .hero p{max-width:50ch}
+  .lead strong{color:#fff;font-weight:650}
 
-  .cta{
-    display:block;width:100%;text-align:center;text-decoration:none;
-    border:0;border-radius:10px;padding:16px 20px;margin-top:26px;
-    font-size:16.5px;font-weight:800;font-family:inherit;letter-spacing:.01em;
-    color:#04120c;background:linear-gradient(120deg,var(--accent),#5ff0c4);
-    cursor:pointer;transition:transform .12s,filter .15s,opacity .15s;
-  }
-  .cta:hover:not(:disabled){filter:brightness(1.07)}
-  .cta:active:not(:disabled){transform:translateY(1px)}
-  .cta:disabled{opacity:.55;cursor:not-allowed}
-  .cta-sub{text-align:center;font-size:13.5px;color:#5a6b80;margin:10px 0 0}
-
-  /* frases soltas de ritmo */
-  .beat{font-size:20px;color:var(--txt);font-weight:600;margin:0 0 14px;letter-spacing:-.015em}
-  .beat.dim{color:var(--txt-dim);font-weight:400}
-  .punch{
-    font-size:clamp(23px,5vw,30px);font-weight:800;letter-spacing:-.025em;
-    line-height:1.2;margin:26px 0 0;color:var(--txt)
+  /* faixa de água onde o card flutua */
+  .agua{
+    display:flow-root; /* impede o margin negativo do form de colapsar e cobrir as ondas */
+    background:linear-gradient(180deg,#08202e 0%,#061523 38%,var(--noite) 100%);
+    padding-bottom:56px;
   }
 
-  .pilar{
-    border:1px solid var(--line);background:linear-gradient(180deg,var(--card),var(--bg-soft));
-    border-radius:var(--radius);padding:20px 20px 18px;margin-bottom:14px
-  }
-  .pilar .ico{font-size:22px;line-height:1;margin-bottom:10px;display:block}
-  .pilar p{margin:0;font-size:15.5px}
-
-  .vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
-  @media (max-width:560px){.vs{grid-template-columns:1fr}}
-  .col{border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 8px;background:var(--bg-soft)}
-  .col.bom{border-color:rgba(45,226,163,.4);background:linear-gradient(180deg,rgba(45,226,163,.07),var(--bg-soft))}
-  .col h4{margin:0 0 12px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-dim)}
-  .col.bom h4{color:var(--accent)}
-  .col ul{margin:0;padding:0;list-style:none}
-  .col li{font-size:15px;color:var(--txt-dim);padding:0 0 10px 24px;position:relative;line-height:1.45}
-  .col li::before{content:"✕";position:absolute;left:0;top:0;color:#5a6b80;font-weight:700}
-  .col.bom li{color:var(--txt)}
-  .col.bom li::before{content:"✓";color:var(--accent)}
-
-  .filtro h3{font-size:15px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
-  .filtro .sim{color:var(--accent)}
-  .filtro .nao{color:#ff8f8f;margin-top:26px}
-  .filtro ul{margin:0;padding:0;list-style:none}
-  .filtro li{font-size:16px;color:var(--txt-dim);padding:0 0 10px 26px;position:relative}
-  .filtro li::before{content:"→";position:absolute;left:0;color:var(--line-strong);font-weight:700}
-
-  .aviso{
-    border-left:3px solid var(--accent-2);background:rgba(78,168,255,.07);
-    padding:14px 16px;border-radius:0 10px 10px 0;margin:0 0 16px
-  }
-  .aviso p{margin:0;font-size:15px;color:#a9c6e8}
-
-  /* ---------- form ---------- */
+  /* ============================================================
+     FORM — vidro sobre a água
+     ============================================================ */
   form{
-    margin-top:26px;background:linear-gradient(180deg,var(--card),var(--bg-soft));
-    border:1px solid var(--line);border-radius:var(--radius);
-    padding:26px 22px;box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+    margin-top:-64px;
+    background:rgba(6,22,33,.62);
+    backdrop-filter:blur(22px) saturate(150%);
+    -webkit-backdrop-filter:blur(22px) saturate(150%);
+    border:1px solid rgba(160,214,230,.16);
+    border-radius:var(--radius);
+    padding:30px 26px;
+    box-shadow:0 34px 80px -34px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.09);
+  }
+  .form-tit{
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    color:var(--aqua);margin:0 0 22px;text-align:center;
   }
   .row{margin-bottom:18px}
   .row.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   @media (max-width:520px){.row.two{grid-template-columns:1fr;gap:18px}}
-  label{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px;color:var(--txt)}
+  label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:#dbe8f3}
   label .opt{font-weight:400;color:var(--txt-dim);font-size:12.5px}
   input,select,textarea{
-    width:100%;background:#0a0f16;border:1px solid var(--line-strong);color:var(--txt);
-    border-radius:10px;padding:12px 13px;font-size:15px;font-family:inherit;
-    transition:border-color .15s,box-shadow .15s;
+    width:100%;
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(160,214,230,.18);
+    color:var(--txt);
+    border-radius:11px;padding:12px 13px;font-size:15px;font-family:inherit;
+    transition:border-color .18s,box-shadow .18s,background .18s;
   }
   textarea{resize:vertical;min-height:86px}
-  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238b9bb0' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-  input::placeholder,textarea::placeholder{color:#5a6b80}
-  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(45,226,163,.14)}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2393a8bd' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+  select option{background:#0a2130;color:var(--txt)}
+  input::placeholder,textarea::placeholder{color:#6d8296}
+  input:focus,select:focus,textarea:focus{
+    outline:none;border-color:var(--aqua);background:rgba(255,255,255,.07);
+    box-shadow:0 0 0 3px rgba(79,227,208,.16);
+  }
   input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger)}
   .err{color:var(--danger);font-size:12.5px;margin-top:6px;display:none}
   .err.show{display:block}
-  .check{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:var(--txt-dim);cursor:pointer}
-  .check input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--accent)}
+
+  .check{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#b6c8d8;cursor:pointer}
+  .check input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--aqua)}
+
+  button{
+    width:100%;margin-top:8px;border:0;border-radius:11px;padding:15px 18px;
+    font-size:16px;font-weight:800;font-family:inherit;letter-spacing:.01em;
+    color:#3a1405;
+    background:linear-gradient(100deg,var(--ambar),#ffd08a 52%,var(--coral));
+    box-shadow:0 12px 34px -12px rgba(255,140,92,.7);
+    cursor:pointer;transition:transform .12s,filter .18s,opacity .18s;
+  }
+  button:hover:not(:disabled){filter:brightness(1.06)}
+  button:active:not(:disabled){transform:translateY(1px)}
+  button:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+
   .formerr{
     display:none;margin-top:14px;padding:11px 13px;border-radius:9px;font-size:14px;
-    background:rgba(255,107,107,.1);border:1px solid rgba(255,107,107,.3);color:#ffb0b0;
+    background:rgba(255,122,122,.1);border:1px solid rgba(255,122,122,.32);color:#ffbcbc;
   }
   .formerr.show{display:block}
-  .done{display:none;text-align:center;padding:34px 10px}
+
+  .done{display:none;text-align:center;padding:36px 10px}
   .done.show{display:block}
   .done .tick{
-    width:62px;height:62px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;
-    font-size:30px;background:rgba(45,226,163,.12);border:1px solid rgba(45,226,163,.35);
+    width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
+    display:grid;place-items:center;font-size:30px;color:#3a1405;
+    background:linear-gradient(140deg,var(--ambar),var(--coral));
+    box-shadow:0 12px 34px -12px rgba(255,140,92,.7);
   }
-  .done h2{margin:0 0 8px;font-size:24px}
-  .done p{margin:0 auto;max-width:40ch}
+  .done h2{margin:0 0 8px;font-size:25px;letter-spacing:-.025em}
+  .done p{color:#b6c8d8;margin:0 auto;max-width:40ch}
 
-  footer{padding:44px 0 70px;text-align:center;border-top:1px solid var(--line)}
-  footer .fim{font-size:19px;color:var(--txt);font-weight:600;margin-bottom:6px}
-  footer .marca{color:#5a6b80;font-size:13px;margin:22px 0 0}
+  footer{text-align:center;color:#63798d;font-size:13px;padding:0 0 44px}
+  footer .estrela{color:var(--ambar);opacity:.8}
   .hp{position:absolute!important;left:-9999px!important;opacity:0;height:0;width:0}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- ============ HERO ============ -->
-  <section class="hero">
-    <span class="badge">🏝️ Florianópolis · a Ilha do Silício</span>
-    <h1>Você<br>trabalha?</h1>
-    <p class="big">Se a resposta for não, pode fechar essa página. Sem ressentimento.</p>
-    <p>
-      Se for sim — e você está em Floripa — essa é a única pergunta que a gente faz na porta.
-      Do lado de dentro estão as <strong>maiores mentes da ilha</strong>: gente aplicando
-      inteligência artificial de ponta e construindo negócios que revolucionam o mundo de verdade.
+<!-- ══════════════ CENA: amanhecer na ilha ══════════════ -->
+<div class="cena">
+  <div class="ceu"></div>
+
+  <!-- o "silício": constelação de circuito no céu -->
+  <svg class="circuito" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMin slice" aria-hidden="true">
+    <g fill="none" stroke="#7fd8e8" stroke-width="1" opacity=".38">
+      <path d="M90 70 L90 150 L210 150 L210 250 L330 250"/>
+      <path d="M330 250 L330 120 L470 120"/>
+      <path d="M1110 60 L1110 130 L980 130 L980 210 L860 210"/>
+      <path d="M860 210 L860 320 L700 320"/>
+      <path d="M470 120 L560 40"/>
+      <path d="M210 150 L120 240"/>
+      <path d="M980 130 L1060 220"/>
+    </g>
+    <g fill="#9fe8f2" opacity=".75">
+      <circle cx="90" cy="70" r="3.2"/><circle cx="210" cy="150" r="3.2"/>
+      <circle cx="330" cy="250" r="3.2"/><circle cx="470" cy="120" r="3.2"/>
+      <circle cx="560" cy="40" r="2.6"/><circle cx="120" cy="240" r="2.6"/>
+      <circle cx="1110" cy="60" r="3.2"/><circle cx="980" cy="130" r="3.2"/>
+      <circle cx="860" cy="210" r="3.2"/><circle cx="700" cy="320" r="3.2"/>
+      <circle cx="1060" cy="220" r="2.6"/>
+    </g>
+  </svg>
+
+  <!-- sol nascendo atrás do horizonte -->
+  <div class="sol"></div>
+
+  <!-- Ponte Hercílio Luz -->
+  <svg class="ponte" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
+    <!-- silhueta em contraluz: traço fino, sem massa preta -->
+    <g fill="none" stroke="#040f18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <!-- tabuleiro -->
+      <path d="M0 152 H1200" stroke-width="5"/>
+      <!-- vãos laterais: treliça baixa -->
+      <path d="M0 132 H330 M0 132 L60 152 M60 132 L120 152 M120 132 L180 152 M180 132 L240 152 M240 132 L300 152"/>
+      <path d="M870 132 H1200 M900 132 L960 152 M960 132 L1020 152 M1020 132 L1080 152 M1080 132 L1140 152 M1140 132 L1200 152"/>
+      <!-- torres -->
+      <path d="M330 152 V30 M870 152 V30" stroke-width="6"/>
+      <path d="M310 30 H350 M850 30 H890" stroke-width="5"/>
+      <!-- vão central: corda superior mergulha até o meio (a cara da Hercílio Luz) -->
+      <path d="M330 46 Q600 116 870 46" stroke-width="5"/>
+      <!-- diagonais da treliça central -->
+      <path d="M330 46 L398 152 M398 62 L466 152 M466 78 L534 152 M534 90 L602 152
+               M870 46 L802 152 M802 62 L734 152 M734 78 L666 152 M666 90 L602 152" stroke-width="2"/>
+      <!-- cabos até as ancoragens -->
+      <path d="M0 108 Q165 42 330 34 M1200 108 Q1035 42 870 34" stroke-width="4"/>
+    </g>
+  </svg>
+
+  <!-- ondas -->
+  <div class="ondas" aria-hidden="true">
+    <svg class="onda1" viewBox="0 0 2400 132" preserveAspectRatio="none">
+      <path fill="#0e4257" d="M0 58 c150 -30 300 30 450 26 s300 -50 450 -46 300 44 450 46 300 -34 450 -40 300 24 450 42 300 26 450 20 v76 H0 Z"/>
+    </svg>
+    <svg class="onda2" viewBox="0 0 2400 132" preserveAspectRatio="none">
+      <path fill="#0a2f42" d="M0 82 c180 26 360 -32 540 -26 s360 40 540 34 360 -40 540 -34 360 40 540 30 240 -14 240 -14 v60 H0 Z"/>
+    </svg>
+    <svg class="onda3" viewBox="0 0 2400 132" preserveAspectRatio="none">
+      <path fill="#08202e" d="M0 104 c200 -22 400 22 600 20 s400 -30 600 -24 400 32 600 26 400 -22 600 -30 v36 H0 Z"/>
+    </svg>
+  </div>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <div class="hero">
+    <span class="badge">🏝️ Florianópolis · SC</span>
+    <h1>Ilha do<span class="l2">Silício</span></h1>
+    <p class="lead">
+      Um coworking de amigos que constroem coisas — <strong>dev, produto, design, marketing, negócio</strong>.
+      Deixa teus dados aí embaixo que a gente te chama.
     </p>
-    <a class="cta" href="#cadastro">QUERO ENTRAR NO COWORKING ➜</a>
-    <p class="cta-sub">Leva 40 segundos. A gente responde no WhatsApp.</p>
-  </section>
+  </div>
+</div>
 
-  <!-- ============ VILÃO ============ -->
-  <section>
-    <div class="kicker">Pense nisso</div>
-    <h2>Com quem você almoçou essa semana?</h2>
-    <p class="beat dim">Não é uma pergunta de coach. É a pergunta mais estratégica da sua carreira.</p>
-    <p>
-      Porque o teto do que você acha possível é a média das
-      <strong>cinco pessoas com quem você senta.</strong>
-    </p>
-    <p>Você pode ser o cara mais aplicado da sala. Se a sala for morna, você vai crescer morno.</p>
-    <p class="punch">O seu gargalo nunca foi talento.<br>Nem esforço. <span class="em">Foi ambiente.</span></p>
-  </section>
-
-  <!-- ============ MOVIMENTO ============ -->
-  <section>
-    <div class="kicker">O movimento</div>
-    <h2>Por que aqui, e não em qualquer lugar</h2>
-    <p>Florianópolis não virou "Ilha do Silício" por acaso, nem por marketing de prefeitura.</p>
-
-    <div class="aviso">
-      <p><strong>⚠️ Turra, preencher:</strong> quem cunhou o termo "Ilha do Silício" e em que ano.
-      O áudio pede essa história e eu não invento data — some esse bloco depois de escrever.</p>
-    </div>
-
-    <p>
-      O apelido pegou porque virou verdade: hoje Floripa é a
-      <strong>capital nacional das startups.</strong>
-    </p>
-    <p>E por trás disso não tem prédio, nem incentivo fiscal. Tem <strong>gente.</strong></p>
-    <p>
-      Gente que na maioria das vezes nem é daqui. Que largou São Paulo, largou o exterior, e veio
-      pra cá porque encontrou a qualidade de vida que queria — sem abrir mão de construir
-      coisa grande.
-    </p>
-    <p>O que a gente faz é simples: junta essa gente na mesma sala.</p>
-    <p>
-      Pega as melhores práticas do que está sendo feito com IA de ponta lá fora e faz a
-      <strong>ponte direta entre Florianópolis e o Vale do Silício.</strong>
-    </p>
-    <p class="punch">Não é um espaço com café bom. <span class="em">É um movimento.</span></p>
-  </section>
-
-  <!-- ============ ENTREGA ============ -->
-  <section>
-    <div class="kicker">O que você recebe</div>
-    <h2>O que acontece quando você entra</h2>
-
-    <div class="pilar">
-      <span class="ico">🤝</span>
-      <h3>Encontros semanais</h3>
-      <p>
-        Presencial, toda semana, com quem está construindo de verdade. É onde parceria nasce,
-        sócio aparece, e problema que ia te travar um mês morre em 20 minutos de conversa.
-      </p>
-    </div>
-
-    <div class="pilar">
-      <span class="ico">💬</span>
-      <h3>O grupo no WhatsApp</h3>
-      <p>
-        O dia a dia da ilha. Pergunta que você jogaria no Google, você joga aqui — e quem responde
-        já resolveu isso antes. Com nome, sobrenome e reputação em jogo.
-      </p>
-    </div>
-
-    <div class="pilar">
-      <span class="ico">🧠</span>
-      <h3>O Cérebro da Ilha</h3>
-      <p>
-        O acervo do coworking. Só o que <strong>já foi validado</strong> por quem já fez: o que
-        funcionou, o que queimou dinheiro, e o passo a passo do meio.
-      </p>
-    </div>
-
-    <p class="beat" style="margin-top:22px">Você não começa do zero. Você começa de onde o último parou.</p>
-    <p>Resultado: <strong>muito mais resultado com muito menos esforço.</strong></p>
-    <a class="cta" href="#cadastro">QUERO ACESSO AO CÉREBRO DA ILHA ➜</a>
-  </section>
-
-  <!-- ============ COMPARATIVO ============ -->
-  <section>
-    <h2>Por que isso não é "mais um coworking"</h2>
-    <div class="vs">
-      <div class="col">
-        <h4>❌ Coworking comum</h4>
-        <ul>
-          <li>Você aluga uma cadeira</li>
-          <li>Do lado senta qualquer um</li>
-          <li>O networking é o café da máquina</li>
-          <li>Conhecimento nenhum fica</li>
-          <li>Você entra e sai do mesmo jeito</li>
-        </ul>
-      </div>
-      <div class="col bom">
-        <h4>✅ Ilha do Silício</h4>
-        <ul>
-          <li>Você entra num grupo selecionado</li>
-          <li>Do lado senta quem constrói</li>
-          <li>Encontro semanal com pauta</li>
-          <li>O Cérebro guarda o que foi validado</li>
-          <li>Você entra num nível e sai em outro</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ FILTRO ============ -->
-  <section class="filtro">
-    <h2>A gente filtra na porta.<br>Sem constrangimento.</h2>
-
-    <h3 class="sim">Entra</h3>
-    <ul>
-      <li>Quem trabalha. Empregado, freelancer, sócio, founder — tanto faz o crachá.</li>
-      <li>Quem está construindo alguma coisa e quer que ela fique grande.</li>
-      <li>Quem some da mesa pra entregar e volta pra somar.</li>
-    </ul>
-
-    <h3 class="nao">Não entra</h3>
-    <ul>
-      <li>Quem quer só um Wi-Fi barato.</li>
-      <li>Quem vem vender pra sala em vez de construir com ela.</li>
-      <li>Quem acha que networking é sair distribuindo cartão.</li>
-    </ul>
-
-    <p style="margin-top:24px">Se você se reconheceu na primeira lista, preenche aí embaixo.</p>
-  </section>
-
-  <!-- ============ FORM ============ -->
-  <section id="cadastro">
-    <h2>Faz teu cadastro</h2>
-    <p>
-      A gente lê tudo e chama no WhatsApp. Se fizer sentido pros dois lados, você já entra
-      no grupo essa semana.
-    </p>
+<!-- ══════════════ ÁGUA + FORM ══════════════ -->
+<div class="agua">
+  <div class="wrap">
 
     <form id="form" novalidate>
+      <p class="form-tit">Faça seu cadastro</p>
+
       <div class="row">
         <label for="nome">Nome completo</label>
         <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como te chamam" required>
@@ -332,7 +303,7 @@
 
       <div class="row two">
         <div>
-          <label for="area">No que você trabalha</label>
+          <label for="area">Área</label>
           <select id="area" name="area" required>
             <option value="">Selecione…</option>
             <option>Desenvolvimento / Engenharia</option>
@@ -360,7 +331,7 @@
             <option>Todo dia</option>
             <option>3 a 4 dias por semana</option>
             <option>1 a 2 dias por semana</option>
-            <option>Só nos encontros semanais</option>
+            <option>De vez em quando</option>
             <option>Só quero acompanhar por enquanto</option>
           </select>
           <div class="err" data-for="frequencia">Escolhe uma opção.</div>
@@ -378,9 +349,8 @@
       </div>
 
       <div class="row">
-        <label for="sobre">O que você está construindo hoje?</label>
-        <textarea id="sobre" name="sobre" placeholder="Em uma ou duas linhas. É isso que a gente lê primeiro." required></textarea>
-        <div class="err" data-for="sobre">Escreve uma linha, nem que seja curta.</div>
+        <label for="sobre">Conta um pouco do que você faz <span class="opt">(opcional)</span></label>
+        <textarea id="sobre" name="sobre" placeholder="No que você está trabalhando hoje e o que te traria pro espaço."></textarea>
       </div>
 
       <div class="row">
@@ -396,25 +366,21 @@
         <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
       </div>
 
-      <button class="cta" type="submit" id="btn">QUERO FAZER PARTE ➜</button>
+      <button type="submit" id="btn">Fazer meu cadastro</button>
       <div class="formerr" id="formerr"></div>
     </form>
 
     <div class="done" id="done">
       <div class="tick">✓</div>
       <h2>Cadastro enviado!</h2>
-      <p>Recebemos teus dados. Logo alguém da Ilha te chama no WhatsApp. Até já 🤙</p>
+      <p>Recebemos teus dados. Logo alguém da Ilha entra em contato pelo WhatsApp. Até já 🤙</p>
     </div>
-  </section>
 
-  <!-- ============ FECHAMENTO ============ -->
-  <footer>
-    <p class="fim">Fica a real:</p>
-    <p>Se você trabalha, se você quer crescer na vida, e você <strong>não</strong> está num lugar assim —</p>
-    <p class="punch">você não está parado.<br><span class="em">Você está ficando pra trás.</span></p>
-    <p class="marca">🏝️ Ilha do Silício · Florianópolis</p>
-  </footer>
+    <footer>
+      <p>Ilha do Silício <span class="estrela">·</span> Florianópolis <span class="estrela">·</span> feito pela galera</p>
+    </footer>
 
+  </div>
 </div>
 
 <script>
@@ -453,7 +419,6 @@ function validate() {
   ok = setErr("area",       !v("area")) && ok;
   ok = setErr("frequencia", !v("frequencia")) && ok;
   ok = setErr("origem",     v("origem").length < 2) && ok;
-  ok = setErr("sobre",      v("sobre").length < 3) && ok;
   return ok;
 }
 
@@ -519,7 +484,7 @@ form.addEventListener("submit", async e => {
     done.scrollIntoView({ behavior: "smooth", block: "center" });
   } catch (err) {
     btn.disabled = false;
-    btn.textContent = "QUERO FAZER PARTE ➜";
+    btn.textContent = "Fazer meu cadastro";
     formerr.textContent = "Não rolou enviar agora. Tenta de novo em instantes — se insistir, chama alguém da Ilha no WhatsApp.";
     formerr.classList.add("show");
   }
