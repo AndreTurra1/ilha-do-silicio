@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ilha do Silício — Coworking em Floripa</title>
-<meta name="description" content="Cadastro da Ilha do Silício, o coworking de quem constrói coisas em Florianópolis.">
-<meta property="og:title" content="Ilha do Silício — Coworking em Floripa">
-<meta property="og:description" content="Um grupo de amigos que trabalha junto em Florianópolis. Faça seu cadastro.">
+<title>Ilha do Silício, o coworking de quem constrói em Floripa</title>
+<meta name="description" content="Você trabalha? Então senta do lado das maiores mentes da ilha. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha, em Florianópolis.">
+<meta property="og:title" content="Você trabalha? Então senta do lado das maiores mentes da ilha">
+<meta property="og:description" content="O coworking de quem constrói em Florianópolis. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha. Faz teu cadastro.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#050d18">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
@@ -37,7 +37,7 @@
   }
 
   /* ============================================================
-     CENA — amanhecer na ilha (céu → sol → ponte → ondas → água)
+     CENA: amanhecer na ilha (céu → sol → ponte → ondas → água)
      ============================================================ */
   .cena{position:relative;isolation:isolate}
   .ceu{
@@ -104,6 +104,12 @@
     text-shadow:0 2px 40px rgba(3,10,21,.55);
   }
   h1 .l2{display:block}
+  .promessa{
+    color:#f4f8fc;font-weight:750;font-size:clamp(20px,5vw,26px);line-height:1.25;
+    letter-spacing:-.015em;margin:0 auto 14px;max-width:26ch;
+    text-shadow:0 2px 24px rgba(4,16,29,.75);
+  }
+  .promessa strong{color:var(--ambar);font-weight:750}
   .lead{
     color:#c3d5e4;font-size:17.5px;margin:0 auto;max-width:44ch;
     text-shadow:0 1px 20px rgba(4,16,29,.7);
@@ -118,7 +124,7 @@
   }
 
   /* ============================================================
-     FORM — vidro sobre a água
+     FORM: vidro sobre a água
      ============================================================ */
   form{
     margin-top:-64px;
@@ -282,9 +288,11 @@
   <div class="hero">
     <span class="badge">🏝️ Florianópolis · SC</span>
     <h1>Ilha do<span class="l2">Silício</span></h1>
+    <p class="promessa">Você trabalha? Então senta do lado das <strong>maiores mentes da ilha</strong>.</p>
     <p class="lead">
-      Um coworking de amigos que constroem coisas — <strong>dev, produto, design, marketing, negócio</strong>.
-      Deixa teus dados aí embaixo que a gente te chama.
+      Encontro toda semana, grupo no WhatsApp e o cérebro da ilha, que é onde a galera joga o que
+      já testou e deu certo. Você pega pronto o que ia levar meses pra descobrir sozinho.
+      <strong>Deixa teus dados aqui embaixo que a gente te chama.</strong>
     </p>
   </div>
 </div>
@@ -414,13 +422,13 @@
 </div>
 
 <script>
-// ── Cole aqui a URL do Web App do Google Apps Script (termina em /exec) ──
+// Cole aqui a URL do Web App do Google Apps Script (termina em /exec)
 const ENDPOINT = "COLE_AQUI_A_URL_DO_APPS_SCRIPT";
 
 // Convite do grupo. Pós-cadastro a pessoa é levada pra cá.
 const GRUPO_WHATSAPP = "https://chat.whatsapp.com/GilRNubPA9cH0ph244mERs";
 
-// Versão dos termos aceitos — registrada na planilha junto com o cadastro.
+// Versão dos termos aceitos, registrada na planilha junto com o cadastro.
 const TERMOS_VERSAO = "v1 (12/08/2026)";
 
 const form    = document.getElementById("form");
@@ -508,7 +516,7 @@ form.addEventListener("submit", async e => {
       res = await req();
     } catch (corsErr) {
       // Alguns ambientes barram a leitura da resposta do Apps Script.
-      // O POST em si chega — reenviar como no-cors evita falso negativo e cadastro duplicado.
+      // O POST em si chega, então reenviar como no-cors evita falso negativo e cadastro duplicado.
       await req({ mode: "no-cors" });
       res = null;
     }
@@ -538,7 +546,7 @@ form.addEventListener("submit", async e => {
   } catch (err) {
     btn.disabled = false;
     btn.textContent = "Fazer meu cadastro";
-    formerr.textContent = "Não rolou enviar agora. Tenta de novo em instantes — se insistir, chama alguém da Ilha no WhatsApp.";
+    formerr.textContent = "Não rolou enviar agora. Tenta de novo em instantes. Se insistir, chama alguém da Ilha no WhatsApp.";
     formerr.classList.add("show");
   }
 });
