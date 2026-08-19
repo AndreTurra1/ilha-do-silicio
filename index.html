@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ilha do Silício, o coworking de quem constrói em Floripa</title>
-<meta name="description" content="Alguém nessa sala já resolveu o problema que te trava hoje. Founders, devs, produto e marketing construindo empresa em Florianópolis. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha.">
-<meta property="og:title" content="Alguém nessa sala já resolveu o problema que te trava hoje">
+<meta name="description" content="Alguém nessa sala já resolveu o problema que trava você hoje. Founders, devs, produto e marketing construindo empresa em Florianópolis. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha.">
+<meta property="og:title" content="Alguém nessa sala já resolveu o problema que trava você hoje">
 <meta property="og:description" content="O coworking de quem constrói em Florianópolis. Você pergunta hoje e sai com a resposta pronta. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#09151f">
@@ -297,6 +297,73 @@
   .botao:active{transform:translateY(1px)}
   .botao[aria-busy="true"]{filter:brightness(.85);cursor:progress}
 
+  /* botão secundário: sem preenchimento, borda e texto na cor de ação.
+     Cinza claro não serve: lê como desabilitado. */
+  .secundario{
+    display:flex;align-items:center;justify-content:center;
+    min-height:56px;padding:var(--e2) var(--e3);
+    border:2px solid var(--acao);border-radius:var(--r1);background:none;
+    font-size:var(--t-s);font-weight:700;font-family:inherit;color:var(--acao);
+    cursor:pointer;transition:background .15s;
+  }
+  .secundario:hover{background:rgba(255,174,82,.12)}
+
+  /* botão terciário: texto sublinhado na cor de ação */
+  .terciario{
+    min-height:48px;padding:0;border:0;background:none;
+    font-family:inherit;font-size:var(--t-xs);font-weight:700;color:var(--acao);
+    text-decoration:underline;text-underline-offset:3px;cursor:pointer;
+  }
+
+  /* ============================================================
+     PASSOS
+     Poucos passos com várias perguntas relacionadas, do mais fácil
+     pro mais difícil, com o progresso sempre à vista.
+     ============================================================ */
+  .progresso{margin-bottom:var(--e4)}
+  .progresso p{font-size:var(--t-xs);color:var(--txt-2);margin:0 0 var(--e1)}
+  .progresso .trilho{
+    height:8px;border-radius:var(--r1);
+    background:var(--fundo);border:1px solid var(--borda);overflow:hidden;
+  }
+  .progresso .barra{height:100%;background:var(--acao);transition:width .3s}
+  @media (prefers-reduced-motion:reduce){ .progresso .barra{transition:none} }
+
+  .tit-passo{
+    font-size:var(--t-m);font-weight:700;line-height:1.3;letter-spacing:-.02em;
+    margin:0 0 var(--e4);
+  }
+
+  /* conferir antes de confirmar */
+  .revisao{
+    border:1px solid var(--borda);border-radius:var(--r1);
+    padding:var(--e3);margin-bottom:var(--e4);
+  }
+  .revisao h4{
+    font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--txt-2);margin:0 0 var(--e2);
+  }
+  .revisao dl{
+    margin:0;display:grid;grid-template-columns:auto 1fr;
+    gap:var(--e1) var(--e2);font-size:var(--t-xs);
+  }
+  .revisao dt{color:var(--txt-2)}
+  .revisao dd{margin:0;color:var(--txt);overflow-wrap:break-word}
+  .revisao-acoes{display:flex;flex-wrap:wrap;gap:var(--e3);margin-top:var(--e2)}
+
+  /* navegação: voltar à esquerda, seguir à direita.
+     Convenção de formulário em passos, que aqui vale mais que
+     alinhar tudo à esquerda, porque a hierarquia já está clara. */
+  .navegacao{display:flex;gap:var(--e2);margin-top:var(--e5)}
+  .navegacao .botao{margin-top:0}
+  .navegacao .primario{flex:1}
+  /* no estreito os dois lado a lado espremem o rótulo do primário em duas
+     linhas. Empilhar mantém a ordem de leitura igual à ordem de foco. */
+  @media (max-width:520px){
+    .navegacao{flex-direction:column}
+    .secundario{width:100%}
+  }
+
   .aviso{
     display:flex;align-items:flex-start;gap:var(--e1);
     margin-top:var(--e3);padding:var(--e2);border-radius:var(--r1);
@@ -387,7 +454,7 @@
   <div class="hero">
     <span class="badge">🏝️ Florianópolis · SC</span>
     <h1>Ilha do<span class="l2">Silício</span></h1>
-    <p class="promessa">Alguém nessa sala já resolveu o problema que te trava hoje.</p>
+    <p class="promessa">Alguém nessa sala já resolveu o problema que trava você hoje.</p>
     <p class="lead">
       Founders, devs, produto e marketing construindo empresa aqui na ilha. Encontro toda
       semana, grupo no WhatsApp e o que já foi testado e deu certo, escrito e à mão.
@@ -401,11 +468,17 @@
 
     <main class="cartao" id="cartao">
       <h2 id="titulo-form">Faça seu cadastro</h2>
-      <p class="sub">Leva um minuto. A gente te chama no WhatsApp.</p>
+      <p class="sub">3 passos, leva um minuto. Deixa o WhatsApp à mão.</p>
 
       <form id="form" novalidate aria-labelledby="titulo-form">
 
-        <!-- resumo dos erros, no topo, com link pra cada campo -->
+        <!-- progresso: a motivação sobe conforme o fim se aproxima -->
+        <div class="progresso">
+          <p><span id="passo-conta">Passo 1 de 3</span></p>
+          <div class="trilho" aria-hidden="true"><div class="barra" id="barra"></div></div>
+        </div>
+
+        <!-- resumo dos erros do passo, com link pra cada campo -->
         <div class="resumo" id="resumo" tabindex="-1" hidden>
           <h3>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>
@@ -414,8 +487,11 @@
           <ul id="resumo-lista"></ul>
         </div>
 
-        <fieldset class="secao">
-          <legend>Quem é você</legend>
+        <!-- ─────────── PASSO 1 ─────────── -->
+        <section class="passo" id="passo-1" hidden>
+          <h3 class="tit-passo" id="tit-1" tabindex="-1">
+            <span class="so-leitor">Passo 1 de 3: </span>Quem é você
+          </h3>
 
           <div class="campo">
             <label for="nome">Nome completo <span class="marca">(obrigatório)</span></label>
@@ -436,6 +512,13 @@
             <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel"
                    maxlength="16" aria-describedby="dica-whatsapp" required>
           </div>
+        </section>
+
+        <!-- ─────────── PASSO 2 ─────────── -->
+        <section class="passo" id="passo-2" hidden>
+          <h3 class="tit-passo" id="tit-2" tabindex="-1">
+            <span class="so-leitor">Passo 2 de 3: </span>O que você faz
+          </h3>
 
           <fieldset class="campo grupo" id="grupo-area" role="radiogroup"
                     aria-labelledby="lbl-area" aria-describedby="err-area">
@@ -462,10 +545,13 @@
             <label for="social">Instagram ou LinkedIn <span class="marca">(opcional)</span></label>
             <input id="social" name="social" type="text" autocapitalize="none">
           </div>
-        </fieldset>
+        </section>
 
-        <fieldset class="secao">
-          <legend>Como você usa a ilha</legend>
+        <!-- ─────────── PASSO 3 ─────────── -->
+        <section class="passo" id="passo-3" hidden>
+          <h3 class="tit-passo" id="tit-3" tabindex="-1">
+            <span class="so-leitor">Passo 3 de 3: </span>Como você usa a ilha
+          </h3>
 
           <fieldset class="campo grupo" id="grupo-frequencia" role="radiogroup"
                     aria-labelledby="lbl-frequencia" aria-describedby="err-frequencia">
@@ -499,8 +585,18 @@
             </label>
           </div>
 
+          <!-- conferir e corrigir antes de confirmar -->
+          <div class="revisao">
+            <h4>Confere se está certo</h4>
+            <dl id="revisao-lista"></dl>
+            <div class="revisao-acoes">
+              <button type="button" class="terciario" data-ir="1">Editar contato</button>
+              <button type="button" class="terciario" data-ir="2">Editar área</button>
+            </div>
+          </div>
+
           <div class="campo consentimento" id="consentimento">
-            <div class="erro" id="err-aceite" hidden style="margin-top:var(--e2)"></div>
+            <div class="erro" id="err-aceite" hidden></div>
             <label class="caixa">
               <input type="checkbox" id="aceite" name="aceite" required aria-describedby="err-aceite">
               <span>
@@ -510,7 +606,7 @@
               </span>
             </label>
           </div>
-        </fieldset>
+        </section>
 
         <!-- anti-spam: humano não vê, bot preenche -->
         <div class="hp" aria-hidden="true">
@@ -518,7 +614,10 @@
           <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
         </div>
 
-        <button type="submit" class="botao" id="btn">Fazer meu cadastro</button>
+        <div class="navegacao">
+          <button type="button" class="secundario" id="voltar" hidden>Voltar</button>
+          <button type="submit" class="botao primario" id="btn">Continuar</button>
+        </div>
 
         <div class="aviso" id="aviso" role="alert" hidden>
           <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--erro)" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>
@@ -553,13 +652,19 @@ const GRUPO_WHATSAPP = "https://chat.whatsapp.com/GilRNubPA9cH0ph244mERs";
 // Versão dos termos aceitos, registrada na planilha junto com o cadastro.
 const TERMOS_VERSAO = "v1 (12/08/2026)";
 
+const TOTAL_PASSOS = 3;
+
 const form    = document.getElementById("form");
 const btn     = document.getElementById("btn");
+const voltar  = document.getElementById("voltar");
+const cartao  = document.getElementById("cartao");
 const pronto  = document.getElementById("pronto");
 const aviso   = document.getElementById("aviso");
 const resumo  = document.getElementById("resumo");
 const lista   = document.getElementById("resumo-lista");
 const zap     = document.getElementById("whatsapp");
+
+let passoAtual = 1;
 
 const ICONE_ERRO = '<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>';
 
@@ -572,24 +677,25 @@ zap.addEventListener("input", () => {
                              : `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
 });
 
-// Cada campo diz o que houve e como sair do erro. Nunca culpa quem preencheu.
+// Cada campo diz em que passo mora, o que houve e como sair do erro.
+// Nunca culpa quem preencheu.
 const CAMPOS = [
-  { nome:"nome",       rotulo:"Nome completo",
+  { passo:1, nome:"nome",       rotulo:"Nome completo",
     ok: v => v.length >= 3,
     msg:"Escreve teu nome completo pra gente saber quem é." },
-  { nome:"email",      rotulo:"E-mail",
+  { passo:1, nome:"email",      rotulo:"E-mail",
     ok: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
     msg:"Confere o e-mail: falta o @ ou o final do endereço." },
-  { nome:"whatsapp",   rotulo:"WhatsApp",
+  { passo:1, nome:"whatsapp",   rotulo:"WhatsApp",
     ok: v => v.replace(/\D/g,"").length >= 10,
     msg:"Coloca o DDD e o número, com 10 ou 11 dígitos." },
-  { nome:"area",       rotulo:"Sua área",        radio:"grupo-area",
+  { passo:2, nome:"area",       rotulo:"Sua área",      radio:"grupo-area",
     ok: v => !!v,
     msg:"Escolhe a área que mais tem a ver com o teu trabalho." },
-  { nome:"frequencia", rotulo:"Pretende vir",    radio:"grupo-frequencia",
+  { passo:3, nome:"frequencia", rotulo:"Pretende vir",  radio:"grupo-frequencia",
     ok: v => !!v,
     msg:"Escolhe com que frequência você pretende aparecer." },
-  { nome:"aceite",     rotulo:"Autorização de uso dos dados", caixa:true,
+  { passo:3, nome:"aceite",     rotulo:"Autorização de uso dos dados", caixa:true,
     ok: (_, el) => el.checked,
     msg:"Marca a autorização pra gente poder guardar teus dados e te chamar." }
 ];
@@ -620,10 +726,10 @@ function marcaErro(c, ruim){
   }
 }
 
-// Valida no envio, não enquanto a pessoa digita.
-function validar(){
+// Valida um passo por vez, no "Continuar". Nunca enquanto a pessoa digita.
+function validar(passo){
   const falhas = [];
-  for (const c of CAMPOS){
+  for (const c of CAMPOS.filter(c => c.passo === passo)){
     const el   = form.elements[c.nome];
     const ruim = !c.ok(valorDe(c.nome), el);
     marcaErro(c, ruim);
@@ -636,7 +742,6 @@ function validar(){
     ).join("");
     resumo.hidden = false;
     resumo.focus();
-    // o link do resumo leva o foco pro campo
     lista.querySelectorAll("a").forEach(a => a.addEventListener("click", e => {
       e.preventDefault();
       const alvo = document.querySelector(a.getAttribute("href"));
@@ -648,11 +753,59 @@ function validar(){
   return falhas.length === 0;
 }
 
+// Antes de confirmar, mostra o que foi respondido e deixa corrigir.
+function montaRevisao(){
+  const linhas = [
+    ["Nome",     valorDe("nome")],
+    ["E-mail",   valorDe("email")],
+    ["WhatsApp", valorDe("whatsapp")],
+    ["Área",     valorDe("area")]
+  ];
+  document.getElementById("revisao-lista").innerHTML = linhas
+    .map(([r, v]) => `<dt>${r}</dt><dd>${(v || "—").replace(/</g,"&lt;")}</dd>`)
+    .join("");
+}
+
+function mostraPasso(n){
+  passoAtual = n;
+  resumo.hidden = true;
+  aviso.hidden  = true;
+
+  for (let i = 1; i <= TOTAL_PASSOS; i++){
+    document.getElementById("passo-" + i).hidden = (i !== n);
+  }
+
+  document.getElementById("passo-conta").textContent = `Passo ${n} de ${TOTAL_PASSOS}`;
+  document.getElementById("barra").style.width = (n / TOTAL_PASSOS * 100) + "%";
+
+  voltar.hidden    = (n === 1);
+  btn.textContent  = (n === TOTAL_PASSOS) ? "Fazer meu cadastro" : "Continuar";
+
+  if (n === TOTAL_PASSOS) montaRevisao();
+
+  // o topo do card, e nao o do documento: a pessoa ve o passo desde o comeco
+  const topo = cartao.getBoundingClientRect().top + window.scrollY - 16;
+  if (window.scrollY > topo) window.scrollTo({ top: topo, behavior: "smooth" });
+  document.getElementById("tit-" + n).focus({ preventScroll: true });
+}
+
+voltar.addEventListener("click", () => mostraPasso(Math.max(1, passoAtual - 1)));
+
+document.querySelectorAll("[data-ir]").forEach(b =>
+  b.addEventListener("click", () => mostraPasso(Number(b.dataset.ir)))
+);
+
 form.addEventListener("submit", async e => {
   e.preventDefault();
   aviso.hidden = true;
 
-  if (!validar()) return;
+  if (!validar(passoAtual)) return;
+
+  // ainda não é o último passo: só avança
+  if (passoAtual < TOTAL_PASSOS){
+    mostraPasso(passoAtual + 1);
+    return;
+  }
 
   if (!/^https:\/\/script\.google\.com\/.*\/exec$/.test(ENDPOINT)) {
     document.getElementById("aviso-txt").textContent =
@@ -722,6 +875,8 @@ form.addEventListener("submit", async e => {
     aviso.hidden = false;
   }
 });
+
+mostraPasso(1);
 </script>
 </body>
 </html>
