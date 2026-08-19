@@ -8,36 +8,85 @@
 <meta property="og:title" content="Alguém nessa sala já resolveu o problema que te trava hoje">
 <meta property="og:description" content="O coworking de quem constrói em Florianópolis. Você pergunta hoje e sai com a resposta pronta. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha.">
 <meta property="og:type" content="website">
-<meta name="theme-color" content="#050d18">
+<meta name="theme-color" content="#09151f">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
 <style>
+  /* ============================================================
+     SISTEMA
+     Toda medida daqui pra baixo sai de uma destas escalas.
+     Se um valor não está aqui, ele não deveria existir no CSS.
+     ============================================================ */
   :root{
-    --noite:#050d18;
-    --mar-fundo:#061a26;
-    --mar:#0a2b3a;
-    --agua:#0d3547;
-    --areia:#f3e2cd;
-    --txt:#eef4fa;
-    --txt-dim:#93a8bd;
-    --aqua:#4fe3d0;
-    --ambar:#ffb45c;
-    --coral:#ff7d5c;
-    --danger:#ff7a7a;
-    --radius:16px;
+    color-scheme: dark;   /* checkbox e radio nativos desenhados pro escuro */
+
+    /* --- COR ---------------------------------------------------
+       Rampa fria (hue 205/207) construída pela receita de paleta
+       escura: sobe o brilho e desce a saturação a cada degrau.
+       A cor de AÇÃO vem do hue do sol da cena (32) e marca
+       exclusivamente o que é clicável.
+       Contraste verificado: texto 9,3:1 · borda de campo 3,7:1 ·
+       ação 8,8:1 · texto do botão 7,6:1.                        */
+    --fundo:        #09151f;  /* fundo principal                 */
+    --fundo-2:      #12222e;  /* fundo alternativo: o card       */
+    --borda-fraca:  #2e404c;  /* bordas decorativas              */
+    --borda:        #667b8a;  /* bordas NÃO decorativas (campos) */
+    --txt:          #edf3f7;  /* títulos e texto principal       */
+    --txt-2:        #b8c7d1;  /* texto secundário                */
+    --acao:         #ffae52;  /* ação: botão, link, foco         */
+    --acao-txt:     #422605;  /* texto sobre preenchimento ação  */
+    --erro:         #ff8173;
+    --ok:           #4cc789;
+
+    /* --- ESPAÇAMENTO — escala de 8 -----------------------------
+       Regra que gera as outras: espaço DENTRO de um grupo é
+       sempre menor que o espaço AO REDOR dele.
+       rótulo→campo 8 · entre grupos 32 · padding do card 24/32   */
+    --e1: 8px;  --e2:16px;  --e3:24px;
+    --e4:32px;  --e5:48px;  --e6:80px;
+
+    /* --- TIPO — base 18px, razão 1.333, arredondada ------------
+       6 tamanhos. Nenhum outro no arquivo.                      */
+    --t-xs: 16px;  --t-s: 18px;  --t-m: 24px;
+    --t-l:  32px;  --t-xl: 44px; --t-xxl:80px;
+
+    /* --- RAIO — 3 degraus -------------------------------------- */
+    --r1: 8px;  --r2:16px;  --r3:32px;
+
+    /* --- ELEVAÇÃO — 3 degraus, cor do degrau mais escuro da
+       rampa. Nunca preto puro, nunca deslocada pra cima.        */
+    --sombra-1: 0 1px 2px rgba(4,10,16,.55);
+    --sombra-2: 0 8px 20px -8px rgba(4,10,16,.8);
+    --sombra-3: 0 24px 56px -24px rgba(4,10,16,.92);
   }
+
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
-    background:var(--noite);
+    background:var(--fundo);
     color:var(--txt);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
-    line-height:1.55;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,"Noto Sans",Helvetica,Arial,sans-serif;
+    font-size:var(--t-s);
+    line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
+  /* dois pesos, só. 400 e 700. */
+  strong,b{font-weight:700}
+
+  /* foco visível em tudo que recebe teclado */
+  :focus-visible{
+    outline:3px solid var(--acao);
+    outline-offset:2px;
+    border-radius:var(--r1);
+  }
+
+  .so-leitor{
+    position:absolute;width:1px;height:1px;overflow:hidden;
+    clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;
+  }
 
   /* ============================================================
-     CENA: amanhecer na ilha (céu → sol → ponte → ondas → água)
+     CENA: amanhecer na ilha (ilustração, aria-hidden)
      ============================================================ */
   .cena{position:relative;isolation:isolate}
   .ceu{
@@ -45,7 +94,7 @@
     background:
       radial-gradient(105% 62% at 50% 90%, rgba(255,166,88,.42) 0%, rgba(255,110,80,.20) 30%, transparent 66%),
       radial-gradient(90% 60% at 82% 16%, rgba(79,227,208,.10), transparent 60%),
-      linear-gradient(180deg, #030a15 0%, #05172a 28%, #0a2b41 54%, #144b5f 78%, #24697a 100%);
+      linear-gradient(180deg, #050f18 0%, #071a2b 28%, #0c2d42 54%, #164c60 78%, #24697a 100%);
   }
   /* granulado sutil pra tirar o "banding" do degradê */
   .ceu::after{
@@ -54,21 +103,14 @@
   }
   .circuito{position:absolute;top:0;left:0;width:100%;height:74%;z-index:-2;opacity:.3}
   .sol{
-    position:absolute;z-index:-2;left:50%;bottom:46px;transform:translateX(-50%);
+    position:absolute;z-index:-2;left:50%;bottom:16px;transform:translateX(-50%);
     width:min(300px,64vw);aspect-ratio:1;border-radius:50%;
     mix-blend-mode:screen;
     background:radial-gradient(circle at 50% 50%,
-      #fff3d6 0%,
-      #ffd79a 18%,
-      #ffab5e 34%,
-      #ff7f45 48%,
-      rgba(255,96,58,.42) 62%,
-      rgba(255,80,50,.14) 74%,
-      rgba(255,80,50,0) 82%);
+      #fff3d6 0%, #ffd79a 18%, #ffab5e 34%, #ff7f45 48%,
+      rgba(255,96,58,.42) 62%, rgba(255,80,50,.14) 74%, rgba(255,80,50,0) 82%);
   }
   .ponte{position:absolute;left:0;width:100%;height:122px;bottom:84px;z-index:-1}
-
-  /* ondas */
   .ondas{position:absolute;bottom:0;left:0;width:100%;height:132px;z-index:1;overflow:hidden}
   .ondas svg{position:absolute;bottom:0;left:0;width:200%;height:100%}
   .onda1{animation:desliza 21s linear infinite;opacity:.55}
@@ -80,142 +122,206 @@
   }
 
   /* ============================================================
-     CONTEÚDO
+     HERO
      ============================================================ */
-  .wrap{max-width:600px;margin:0 auto;padding:0 20px;position:relative;z-index:2}
+  .wrap{max-width:640px;margin:0 auto;padding:0 var(--e2);position:relative;z-index:2}
   .hero{
     position:relative;z-index:2;max-width:640px;margin:0 auto;text-align:center;
-    padding:clamp(56px,13vh,104px) 20px clamp(340px,42vh,410px);
+    padding:var(--e5) var(--e2) clamp(280px,32vh,360px);
   }
-
+  /* véu: o sol clareia o fundo justo onde a copy termina. Sem isto o
+     contraste do texto cai abaixo de 4,5:1 na parte clara da ilustração. */
+  .hero::before{
+    content:"";position:absolute;z-index:-1;pointer-events:none;
+    left:50%;top:0;transform:translateX(-50%);
+    width:min(760px,140%);height:calc(100% - clamp(200px,24vh,280px));
+    background:radial-gradient(62% 50% at 50% 42%, rgba(6,15,23,.82) 0%, rgba(6,15,23,.5) 58%, rgba(6,15,23,0) 100%);
+  }
   .badge{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:11.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;
-    color:#ffdcb4;
-    background:rgba(255,180,92,.1);
-    border:1px solid rgba(255,180,92,.3);
+    display:inline-flex;align-items:center;gap:var(--e1);
+    font-size:var(--t-xs);letter-spacing:.14em;text-transform:uppercase;font-weight:700;
+    color:var(--txt);
+    background:rgba(9,21,31,.55);
+    border:1px solid var(--borda);
     backdrop-filter:blur(8px);
-    padding:7px 15px;border-radius:999px;
+    padding:var(--e1) var(--e2);border-radius:var(--r3);
   }
   h1{
-    font-size:clamp(52px,15vw,104px);
-    line-height:.92;letter-spacing:-.045em;
-    margin:26px 0 20px;font-weight:800;color:#f4f8fc;
-    text-shadow:0 2px 40px rgba(3,10,21,.55);
+    font-size:clamp(var(--t-xl),12vw,var(--t-xxl));
+    line-height:1;letter-spacing:-.04em;
+    margin:var(--e3) 0 var(--e2);font-weight:700;color:var(--txt);
+    text-shadow:0 2px 40px rgba(4,10,16,.6);
   }
   h1 .l2{display:block}
   .promessa{
-    color:#f4f8fc;font-weight:750;font-size:clamp(20px,5vw,26px);line-height:1.25;
-    letter-spacing:-.015em;margin:0 auto 14px;max-width:26ch;
-    text-shadow:0 2px 24px rgba(4,16,29,.75);
+    color:var(--txt);font-weight:700;
+    font-size:clamp(var(--t-m),5vw,var(--t-l));line-height:1.25;letter-spacing:-.015em;
+    margin:0 auto var(--e2);max-width:22ch;
+    text-shadow:0 2px 24px rgba(4,10,16,.8);
   }
-  .promessa strong{color:var(--ambar);font-weight:750}
   .lead{
-    color:#c3d5e4;font-size:17.5px;margin:0 auto;max-width:44ch;
-    text-shadow:0 1px 20px rgba(4,16,29,.7);
+    color:var(--txt-2);font-size:var(--t-s);margin:0 auto;max-width:52ch;
+    text-shadow:0 1px 20px rgba(4,10,16,.75);
   }
-  .lead strong{color:#fff;font-weight:650}
 
   /* faixa de água onde o card flutua */
   .agua{
-    display:flow-root; /* impede o margin negativo do form de colapsar e cobrir as ondas */
-    background:linear-gradient(180deg,#08202e 0%,#061523 38%,var(--noite) 100%);
-    padding-bottom:56px;
+    display:flow-root; /* impede o margin negativo do card de cobrir as ondas */
+    background:linear-gradient(180deg,#0d2637 0%,#0b1b28 38%,var(--fundo) 100%);
+    padding-bottom:var(--e5);
   }
 
   /* ============================================================
-     FORM: vidro sobre a água
+     FORMULÁRIO
+     Coluna única · rótulo em cima · dica acima do campo ·
+     erro acima do campo · obrigatório e opcional ambos marcados
      ============================================================ */
-  form{
-    margin-top:-64px;
-    background:rgba(6,22,33,.62);
-    backdrop-filter:blur(22px) saturate(150%);
-    -webkit-backdrop-filter:blur(22px) saturate(150%);
-    border:1px solid rgba(160,214,230,.16);
-    border-radius:var(--radius);
-    padding:30px 26px;
-    box-shadow:0 34px 80px -34px rgba(0,0,0,.95), inset 0 1px 0 rgba(255,255,255,.09);
+  .cartao{
+    margin-top:calc(var(--e5) * -1);
+    background:var(--fundo-2);          /* opaco: contraste auditável */
+    border:1px solid var(--borda-fraca);
+    border-radius:var(--r2);
+    padding:var(--e4) var(--e3);
+    box-shadow:var(--sombra-3);
   }
-  .form-tit{
-    font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
-    color:var(--aqua);margin:0 0 22px;text-align:center;
+  @media (min-width:600px){ .cartao{padding:var(--e4)} }
+
+  .cartao > h2{
+    font-size:var(--t-m);font-weight:700;line-height:1.3;
+    margin:0 0 var(--e1);letter-spacing:-.02em;
   }
-  .row{margin-bottom:18px}
-  .row.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  @media (max-width:520px){.row.two{grid-template-columns:1fr;gap:18px}}
-  label{display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:#dbe8f3}
-  label .opt{font-weight:400;color:var(--txt-dim);font-size:12.5px}
-  input,select,textarea{
-    width:100%;
-    background:rgba(255,255,255,.045);
-    border:1px solid rgba(160,214,230,.18);
+  .cartao > .sub{color:var(--txt-2);font-size:var(--t-xs);margin:0 0 var(--e4)}
+
+  /* seções: agrupar campos relacionados sob um título */
+  .secao{border:0;padding:0;margin:0 0 var(--e5);min-width:0}
+  .secao > legend{
+    font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;
+    color:var(--txt-2);padding:0;margin-bottom:var(--e3);
+  }
+
+  /* um campo = um grupo. 8px por dentro, 32px por fora. */
+  .campo{margin-bottom:var(--e4)}
+  /* fieldset agrupa rádios por semântica, não por moldura: zera o desenho nativo */
+  fieldset.grupo{border:0;padding:0;margin:0 0 var(--e4);min-width:0}
+  .campo:last-child{margin-bottom:0}
+  .campo > label,.grupo > legend{
+    display:block;font-size:var(--t-s);font-weight:700;color:var(--txt);
+    margin:0 0 var(--e1);padding:0;
+  }
+  .marca{font-weight:400;color:var(--txt-2);font-size:var(--t-xs)}
+  /* dica ACIMA do campo: embaixo, teclado e autofill cobrem */
+  .dica{font-size:var(--t-xs);color:var(--txt-2);margin:0 0 var(--e1)}
+
+  input[type=text],input[type=email],input[type=tel],textarea{
+    width:100%;min-height:48px;                 /* alvo mínimo 48pt */
+    background:var(--fundo);
+    border:1px solid var(--borda);              /* 3,7:1 */
     color:var(--txt);
-    border-radius:11px;padding:12px 13px;font-size:15px;font-family:inherit;
-    transition:border-color .18s,box-shadow .18s,background .18s;
+    border-radius:var(--r1);
+    padding:var(--e1) var(--e2);
+    font-size:var(--t-s);font-family:inherit;line-height:1.5;
+    transition:border-color .15s,box-shadow .15s;
   }
-  textarea{resize:vertical;min-height:86px}
-  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2393a8bd' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
-  select option{background:#0a2130;color:var(--txt)}
-  input::placeholder,textarea::placeholder{color:#6d8296}
-  input:focus,select:focus,textarea:focus{
-    outline:none;border-color:var(--aqua);background:rgba(255,255,255,.07);
-    box-shadow:0 0 0 3px rgba(79,227,208,.16);
+  textarea{resize:vertical;min-height:120px;padding-top:var(--e2)}
+  /* largura casada com o que se espera digitar */
+  #whatsapp{max-width:16ch}
+  input:focus-visible,textarea:focus-visible{
+    outline:3px solid var(--acao);outline-offset:2px;border-color:var(--acao);
   }
-  input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"]{border-color:var(--danger)}
-  .err{color:var(--danger);font-size:12.5px;margin-top:6px;display:none}
-  .err.show{display:block}
+  input[aria-invalid="true"],textarea[aria-invalid="true"]{border-color:var(--erro);border-width:2px}
 
-  .check{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:#b6c8d8;cursor:pointer}
-  .check input{width:18px;height:18px;flex:0 0 auto;margin-top:2px;accent-color:var(--aqua)}
-  .check a{color:var(--aqua);text-underline-offset:3px}
-  .check a:hover{color:#8ff0e2}
-  .consent{
-    border:1px solid rgba(160,214,230,.14);background:rgba(255,255,255,.03);
-    border-radius:11px;padding:14px 15px;
+  /* rádios: círculo preservado, empilhados, alvo de 48px */
+  .opcoes{display:flex;flex-direction:column;gap:var(--e1)}
+  .opcao{
+    display:flex;align-items:center;gap:var(--e2);
+    min-height:48px;padding:0 var(--e2);
+    border:1px solid var(--borda);border-radius:var(--r1);
+    font-size:var(--t-s);color:var(--txt);cursor:pointer;
   }
-  .consent.ruim{border-color:var(--danger);background:rgba(255,122,122,.06)}
+  .opcao:hover{border-color:var(--txt-2)}
+  .opcao input{
+    width:24px;height:24px;flex:0 0 auto;margin:0;accent-color:var(--acao);
+    font-size:inherit; /* tira o 13.33px padrao do navegador da varredura */
+  }
+  .opcao:has(input:checked){border-color:var(--acao);background:rgba(255,174,82,.09)}
+  .opcao:has(input:focus-visible){outline:3px solid var(--acao);outline-offset:2px}
 
-  button{
-    width:100%;margin-top:8px;border:0;border-radius:11px;padding:15px 18px;
-    font-size:16px;font-weight:800;font-family:inherit;letter-spacing:.01em;
-    color:#3a1405;
-    background:linear-gradient(100deg,var(--ambar),#ffd08a 52%,var(--coral));
-    box-shadow:0 12px 34px -12px rgba(255,140,92,.7);
-    cursor:pointer;transition:transform .12s,filter .18s,opacity .18s;
+  /* caixas de seleção */
+  .caixa{
+    display:flex;align-items:flex-start;gap:var(--e2);
+    min-height:48px;padding:var(--e2) 0;
+    font-size:var(--t-s);color:var(--txt);cursor:pointer;
   }
-  button:hover:not(:disabled){filter:brightness(1.06)}
-  button:active:not(:disabled){transform:translateY(1px)}
-  button:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+  .caixa input{width:24px;height:24px;flex:0 0 auto;margin:2px 0 0;accent-color:var(--acao);font-size:inherit}
+  .caixa a{color:var(--acao);text-underline-offset:3px}   /* link sublinhado, não só colorido */
+  .consentimento{
+    border:1px solid var(--borda);border-radius:var(--r1);
+    padding:0 var(--e2);
+  }
+  .consentimento.ruim{border-color:var(--erro);border-width:2px}
 
-  .formerr{
-    display:none;margin-top:14px;padding:11px 13px;border-radius:9px;font-size:14px;
-    background:rgba(255,122,122,.1);border:1px solid rgba(255,122,122,.32);color:#ffbcbc;
+  /* erro: vermelho + ícone, acima do campo. Nunca só a cor. */
+  .erro{
+    display:flex;align-items:flex-start;gap:var(--e1);
+    color:var(--erro);font-size:var(--t-xs);line-height:1.45;
+    margin:0 0 var(--e1);
   }
-  .formerr.show{display:block}
+  .erro svg{flex:0 0 auto;margin-top:3px}
+  [hidden]{display:none!important}
 
-  .done{display:none;text-align:center;padding:36px 10px}
-  .done.show{display:block}
-  .done .tick{
-    width:64px;height:64px;margin:0 auto 18px;border-radius:50%;
-    display:grid;place-items:center;font-size:30px;color:#3a1405;
-    background:linear-gradient(140deg,var(--ambar),var(--coral));
-    box-shadow:0 12px 34px -12px rgba(255,140,92,.7);
+  /* resumo de erros no topo do formulário */
+  .resumo{
+    border:2px solid var(--erro);border-radius:var(--r1);
+    padding:var(--e2);margin-bottom:var(--e4);
   }
-  .done h2{margin:0 0 8px;font-size:25px;letter-spacing:-.025em}
-  .done p{color:#b6c8d8;margin:0 auto;max-width:40ch}
-  .zap{
-    display:block;max-width:340px;margin:24px auto 0;text-decoration:none;text-align:center;
-    background:#25d366;color:#062b12;border-radius:11px;padding:15px 18px;
-    font-size:16px;font-weight:800;letter-spacing:.01em;
-    box-shadow:0 12px 34px -12px rgba(37,211,102,.6);
-    transition:filter .18s,transform .12s;
+  .resumo h3{
+    display:flex;align-items:center;gap:var(--e1);
+    font-size:var(--t-s);font-weight:700;color:var(--erro);margin:0 0 var(--e1);
   }
-  .zap:hover{filter:brightness(1.06)}
-  .zap:active{transform:translateY(1px)}
-  .redir{font-size:13.5px;color:#7b91a6;margin:14px auto 0}
+  .resumo ul{margin:0;padding-left:var(--e3);font-size:var(--t-xs);color:var(--txt)}
+  .resumo li{margin-top:var(--e1)}
+  .resumo a{color:var(--txt);text-underline-offset:3px}
 
-  footer{text-align:center;color:#63798d;font-size:13px;padding:0 0 44px}
-  footer .estrela{color:var(--ambar);opacity:.8}
+  /* botão primário: um só na tela */
+  .botao{
+    display:flex;align-items:center;justify-content:center;
+    width:100%;min-height:56px;border:0;border-radius:var(--r1);
+    padding:var(--e2) var(--e3);margin-top:var(--e5);
+    font-size:var(--t-s);font-weight:700;font-family:inherit;
+    color:var(--acao-txt);background:var(--acao);
+    box-shadow:var(--sombra-2);
+    cursor:pointer;transition:filter .15s,transform .1s;
+    text-decoration:none;text-align:center;
+  }
+  .botao:hover{filter:brightness(1.07)}
+  .botao:active{transform:translateY(1px)}
+  .botao[aria-busy="true"]{filter:brightness(.85);cursor:progress}
+
+  .aviso{
+    display:flex;align-items:flex-start;gap:var(--e1);
+    margin-top:var(--e3);padding:var(--e2);border-radius:var(--r1);
+    border:2px solid var(--erro);font-size:var(--t-xs);color:var(--txt);
+  }
+  .aviso svg{flex:0 0 auto;margin-top:2px}
+
+  /* ============================================================
+     SUCESSO
+     ============================================================ */
+  .pronto{padding:var(--e5) 0;text-align:center}
+  .pronto .tick{
+    width:64px;height:64px;margin:0 auto var(--e3);border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--ok);color:var(--acao-txt);
+    box-shadow:var(--sombra-2);
+  }
+  .pronto h2{font-size:var(--t-l);font-weight:700;margin:0 0 var(--e1);letter-spacing:-.02em}
+  .pronto p{color:var(--txt-2);margin:0 auto;max-width:44ch;font-size:var(--t-s)}
+  .pronto .botao{max-width:360px;margin:var(--e4) auto 0}
+
+  footer{
+    text-align:center;color:var(--txt-2);font-size:var(--t-xs);
+    padding:var(--e5) var(--e2) var(--e5);
+  }
   .hp{position:absolute!important;left:-9999px!important;opacity:0;height:0;width:0}
 </style>
 </head>
@@ -251,22 +357,15 @@
 
   <!-- Ponte Hercílio Luz -->
   <svg class="ponte" viewBox="0 0 1200 190" preserveAspectRatio="xMidYMax meet" aria-hidden="true">
-    <!-- silhueta em contraluz: traço fino, sem massa preta -->
     <g fill="none" stroke="#040f18" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-      <!-- tabuleiro -->
       <path d="M0 152 H1200" stroke-width="5"/>
-      <!-- vãos laterais: treliça baixa -->
       <path d="M0 132 H330 M0 132 L60 152 M60 132 L120 152 M120 132 L180 152 M180 132 L240 152 M240 132 L300 152"/>
       <path d="M870 132 H1200 M900 132 L960 152 M960 132 L1020 152 M1020 132 L1080 152 M1080 132 L1140 152 M1140 132 L1200 152"/>
-      <!-- torres -->
       <path d="M330 152 V30 M870 152 V30" stroke-width="6"/>
       <path d="M310 30 H350 M850 30 H890" stroke-width="5"/>
-      <!-- vão central: corda superior mergulha até o meio (a cara da Hercílio Luz) -->
       <path d="M330 46 Q600 116 870 46" stroke-width="5"/>
-      <!-- diagonais da treliça central -->
       <path d="M330 46 L398 152 M398 62 L466 152 M466 78 L534 152 M534 90 L602 152
                M870 46 L802 152 M802 62 L734 152 M734 78 L666 152 M666 90 L602 152" stroke-width="2"/>
-      <!-- cabos até as ancoragens -->
       <path d="M0 108 Q165 42 330 34 M1200 108 Q1035 42 870 34" stroke-width="4"/>
     </g>
   </svg>
@@ -274,13 +373,13 @@
   <!-- ondas -->
   <div class="ondas" aria-hidden="true">
     <svg class="onda1" viewBox="0 0 2400 132" preserveAspectRatio="none">
-      <path fill="#0e4257" d="M0 58 c150 -30 300 30 450 26 s300 -50 450 -46 300 44 450 46 300 -34 450 -40 300 24 450 42 300 26 450 20 v76 H0 Z"/>
+      <path fill="#124559" d="M0 58 c150 -30 300 30 450 26 s300 -50 450 -46 300 44 450 46 300 -34 450 -40 300 24 450 42 300 26 450 20 v76 H0 Z"/>
     </svg>
     <svg class="onda2" viewBox="0 0 2400 132" preserveAspectRatio="none">
-      <path fill="#0a2f42" d="M0 82 c180 26 360 -32 540 -26 s360 40 540 34 360 -40 540 -34 360 40 540 30 240 -14 240 -14 v60 H0 Z"/>
+      <path fill="#0d3346" d="M0 82 c180 26 360 -32 540 -26 s360 40 540 34 360 -40 540 -34 360 40 540 30 240 -14 240 -14 v60 H0 Z"/>
     </svg>
     <svg class="onda3" viewBox="0 0 2400 132" preserveAspectRatio="none">
-      <path fill="#08202e" d="M0 104 c200 -22 400 22 600 20 s400 -30 600 -24 400 32 600 26 400 -22 600 -30 v36 H0 Z"/>
+      <path fill="#0d2637" d="M0 104 c200 -22 400 22 600 20 s400 -30 600 -24 400 32 600 26 400 -22 600 -30 v36 H0 Z"/>
     </svg>
   </div>
 
@@ -288,135 +387,157 @@
   <div class="hero">
     <span class="badge">🏝️ Florianópolis · SC</span>
     <h1>Ilha do<span class="l2">Silício</span></h1>
-    <p class="promessa">Alguém nessa sala já resolveu o <strong>problema que te trava hoje</strong>.</p>
+    <p class="promessa">Alguém nessa sala já resolveu o problema que te trava hoje.</p>
     <p class="lead">
-      São founders, devs, produto e marketing construindo empresa aqui na ilha. Encontro toda
-      semana, grupo no WhatsApp e o cérebro da ilha, que é onde fica o que já foi testado e deu
-      certo. Você pergunta hoje e sai com a resposta pronta.
-      <strong>Deixa teus dados aqui embaixo que a gente te chama.</strong>
+      Founders, devs, produto e marketing construindo empresa aqui na ilha. Encontro toda
+      semana, grupo no WhatsApp e o que já foi testado e deu certo, escrito e à mão.
     </p>
   </div>
 </div>
 
-<!-- ══════════════ ÁGUA + FORM ══════════════ -->
+<!-- ══════════════ ÁGUA + FORMULÁRIO ══════════════ -->
 <div class="agua">
   <div class="wrap">
 
-    <form id="form" novalidate>
-      <p class="form-tit">Faça seu cadastro</p>
+    <main class="cartao" id="cartao">
+      <h2 id="titulo-form">Faça seu cadastro</h2>
+      <p class="sub">Leva um minuto. A gente te chama no WhatsApp.</p>
 
-      <div class="row">
-        <label for="nome">Nome completo</label>
-        <input id="nome" name="nome" type="text" autocomplete="name" placeholder="Como te chamam" required>
-        <div class="err" data-for="nome">Preenche teu nome.</div>
-      </div>
+      <form id="form" novalidate aria-labelledby="titulo-form">
 
-      <div class="row two">
-        <div>
-          <label for="email">E-mail</label>
-          <input id="email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="voce@email.com" required>
-          <div class="err" data-for="email">E-mail inválido.</div>
+        <!-- resumo dos erros, no topo, com link pra cada campo -->
+        <div class="resumo" id="resumo" tabindex="-1" hidden>
+          <h3>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>
+            Faltou preencher
+          </h3>
+          <ul id="resumo-lista"></ul>
         </div>
-        <div>
-          <label for="whatsapp">WhatsApp</label>
-          <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel" placeholder="(48) 99999-9999" maxlength="16" required>
-          <div class="err" data-for="whatsapp">Coloca DDD + número.</div>
+
+        <fieldset class="secao">
+          <legend>Quem é você</legend>
+
+          <div class="campo">
+            <label for="nome">Nome completo <span class="marca">(obrigatório)</span></label>
+            <div class="erro" id="err-nome" hidden></div>
+            <input id="nome" name="nome" type="text" autocomplete="name" required>
+          </div>
+
+          <div class="campo">
+            <label for="email">E-mail <span class="marca">(obrigatório)</span></label>
+            <div class="erro" id="err-email" hidden></div>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required>
+          </div>
+
+          <div class="campo">
+            <label for="whatsapp">WhatsApp <span class="marca">(obrigatório)</span></label>
+            <p class="dica" id="dica-whatsapp">Com DDD. É por aqui que a gente te chama.</p>
+            <div class="erro" id="err-whatsapp" hidden></div>
+            <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel"
+                   maxlength="16" aria-describedby="dica-whatsapp" required>
+          </div>
+
+          <fieldset class="campo grupo" id="grupo-area" role="radiogroup"
+                    aria-labelledby="lbl-area" aria-describedby="err-area">
+            <legend id="lbl-area">Sua área <span class="marca">(obrigatório)</span></legend>
+            <div class="erro" id="err-area" hidden></div>
+            <div class="opcoes">
+              <label class="opcao"><input type="radio" name="area" value="Desenvolvimento / Engenharia"><span>Desenvolvimento / Engenharia</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Produto / Design"><span>Produto / Design</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Marketing / Growth"><span>Marketing / Growth</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Vendas / Comercial"><span>Vendas / Comercial</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Dados / IA"><span>Dados / IA</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Founder / Gestão"><span>Founder / Gestão</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Financeiro / Jurídico"><span>Financeiro / Jurídico</span></label>
+              <label class="opcao"><input type="radio" name="area" value="Outra"><span>Outra</span></label>
+            </div>
+          </fieldset>
+
+          <div class="campo">
+            <label for="empresa">Empresa ou projeto <span class="marca">(opcional)</span></label>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization">
+          </div>
+
+          <div class="campo">
+            <label for="social">Instagram ou LinkedIn <span class="marca">(opcional)</span></label>
+            <input id="social" name="social" type="text" autocapitalize="none">
+          </div>
+        </fieldset>
+
+        <fieldset class="secao">
+          <legend>Como você usa a ilha</legend>
+
+          <fieldset class="campo grupo" id="grupo-frequencia" role="radiogroup"
+                    aria-labelledby="lbl-frequencia" aria-describedby="err-frequencia">
+            <legend id="lbl-frequencia">Pretende vir <span class="marca">(obrigatório)</span></legend>
+            <div class="erro" id="err-frequencia" hidden></div>
+            <div class="opcoes">
+              <label class="opcao"><input type="radio" name="frequencia" value="Todo dia"><span>Todo dia</span></label>
+              <label class="opcao"><input type="radio" name="frequencia" value="3 a 4 dias por semana"><span>3 a 4 dias por semana</span></label>
+              <label class="opcao"><input type="radio" name="frequencia" value="1 a 2 dias por semana"><span>1 a 2 dias por semana</span></label>
+              <label class="opcao"><input type="radio" name="frequencia" value="De vez em quando"><span>De vez em quando</span></label>
+              <label class="opcao"><input type="radio" name="frequencia" value="Só quero acompanhar por enquanto"><span>Só quero acompanhar por enquanto</span></label>
+            </div>
+          </fieldset>
+
+          <div class="campo">
+            <label for="origem">Como conheceu a Ilha do Silício <span class="marca">(opcional)</span></label>
+            <p class="dica" id="dica-origem">Indicação de alguém, evento, Instagram…</p>
+            <input id="origem" name="origem" type="text" aria-describedby="dica-origem">
+          </div>
+
+          <div class="campo">
+            <label for="sobre">Conta um pouco do que você faz <span class="marca">(opcional)</span></label>
+            <p class="dica" id="dica-sobre">No que você está trabalhando hoje e o que te traria pro espaço.</p>
+            <textarea id="sobre" name="sobre" aria-describedby="dica-sobre"></textarea>
+          </div>
+
+          <div class="campo">
+            <label class="caixa">
+              <input type="checkbox" id="grupo" name="grupo" checked>
+              <span>Pode me adicionar no grupo de WhatsApp da galera.</span>
+            </label>
+          </div>
+
+          <div class="campo consentimento" id="consentimento">
+            <div class="erro" id="err-aceite" hidden style="margin-top:var(--e2)"></div>
+            <label class="caixa">
+              <input type="checkbox" id="aceite" name="aceite" required aria-describedby="err-aceite">
+              <span>
+                Autorizo a Ilha do Silício a guardar e usar os dados acima para entrar em
+                contato comigo, e declaro que li os
+                <a href="privacidade.html" target="_blank" rel="noopener">termos de uso e a política de privacidade</a>.
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <!-- anti-spam: humano não vê, bot preenche -->
+        <div class="hp" aria-hidden="true">
+          <label for="website">Não preencha</label>
+          <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
         </div>
-      </div>
 
-      <div class="row two">
-        <div>
-          <label for="area">Área</label>
-          <select id="area" name="area" required>
-            <option value="">Selecione…</option>
-            <option>Desenvolvimento / Engenharia</option>
-            <option>Produto / Design</option>
-            <option>Marketing / Growth</option>
-            <option>Vendas / Comercial</option>
-            <option>Dados / IA</option>
-            <option>Founder / Gestão</option>
-            <option>Financeiro / Jurídico</option>
-            <option>Outra</option>
-          </select>
-          <div class="err" data-for="area">Escolhe uma área.</div>
+        <button type="submit" class="botao" id="btn">Fazer meu cadastro</button>
+
+        <div class="aviso" id="aviso" role="alert" hidden>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="var(--erro)" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>
+          <span id="aviso-txt"></span>
         </div>
-        <div>
-          <label for="empresa">Empresa ou projeto <span class="opt">(opcional)</span></label>
-          <input id="empresa" name="empresa" type="text" autocomplete="organization" placeholder="Onde você toca isso">
+      </form>
+
+      <div class="pronto" id="pronto" hidden>
+        <div class="tick">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5"/></svg>
         </div>
+        <h2 tabindex="-1" id="pronto-tit">Cadastro enviado</h2>
+        <p>Agora entra no grupo do WhatsApp pra já cair no meio da conversa. Até já 🤙</p>
+        <a class="botao" id="linkGrupo" href="#" target="_blank" rel="noopener">Entrar no grupo do WhatsApp</a>
       </div>
-
-      <div class="row two">
-        <div>
-          <label for="frequencia">Pretende vir…</label>
-          <select id="frequencia" name="frequencia" required>
-            <option value="">Selecione…</option>
-            <option>Todo dia</option>
-            <option>3 a 4 dias por semana</option>
-            <option>1 a 2 dias por semana</option>
-            <option>De vez em quando</option>
-            <option>Só quero acompanhar por enquanto</option>
-          </select>
-          <div class="err" data-for="frequencia">Escolhe uma opção.</div>
-        </div>
-        <div>
-          <label for="social">Instagram / LinkedIn <span class="opt">(opcional)</span></label>
-          <input id="social" name="social" type="text" placeholder="@seuuser" autocapitalize="none">
-        </div>
-      </div>
-
-      <div class="row">
-        <label for="origem">Como conheceu a Ilha do Silício?</label>
-        <input id="origem" name="origem" type="text" placeholder="Indicação de alguém, evento, Instagram…" required>
-        <div class="err" data-for="origem">Conta pra gente rapidinho.</div>
-      </div>
-
-      <div class="row">
-        <label for="sobre">Conta um pouco do que você faz <span class="opt">(opcional)</span></label>
-        <textarea id="sobre" name="sobre" placeholder="No que você está trabalhando hoje e o que te traria pro espaço."></textarea>
-      </div>
-
-      <div class="row">
-        <label class="check">
-          <input type="checkbox" id="grupo" name="grupo" checked>
-          <span>Pode me adicionar no grupo de WhatsApp da galera.</span>
-        </label>
-      </div>
-
-      <div class="row">
-        <div class="consent" id="consent">
-          <label class="check">
-            <input type="checkbox" id="aceite" name="aceite" required>
-            <span>
-              Autorizo a Ilha do Silício a guardar e usar os dados acima para entrar em
-              contato comigo, e declaro que li os
-              <a href="privacidade.html" target="_blank" rel="noopener">termos de uso e a política de privacidade</a>.
-            </span>
-          </label>
-          <div class="err" data-for="aceite">Precisa autorizar pra gente poder guardar teus dados e te chamar.</div>
-        </div>
-      </div>
-
-      <!-- anti-spam: humano não vê, bot preenche -->
-      <div class="hp" aria-hidden="true">
-        <label for="website">Não preencha</label>
-        <input id="website" name="website" type="text" tabindex="-1" autocomplete="off">
-      </div>
-
-      <button type="submit" id="btn">Fazer meu cadastro</button>
-      <div class="formerr" id="formerr"></div>
-    </form>
-
-    <div class="done" id="done">
-      <div class="tick">✓</div>
-      <h2>Cadastro enviado!</h2>
-      <p>Agora entra no grupo do WhatsApp pra já cair no meio da conversa. Até já 🤙</p>
-      <a class="zap" id="linkGrupo" href="#" target="_blank" rel="noopener">ENTRAR NO GRUPO DO WHATSAPP</a>
-      <p class="redir">Te levamos pra lá em <span id="conta">5</span>s…</p>
-    </div>
+    </main>
 
     <footer>
-      <p>Ilha do Silício <span class="estrela">·</span> Florianópolis <span class="estrela">·</span> feito pela galera</p>
+      <p>Ilha do Silício · Florianópolis · feito pela galera</p>
     </footer>
 
   </div>
@@ -426,7 +547,7 @@
 // Cole aqui a URL do Web App do Google Apps Script (termina em /exec)
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbw6JSzQbJKzNGkP4zuwx56KdK5547vUs37Mrr-NUgushA59C9CFzf6yBQ8R0c-zk0qjQA/exec";
 
-// Convite do grupo. Pós-cadastro a pessoa é levada pra cá.
+// Convite do grupo. Pós-cadastro a pessoa clica pra entrar.
 const GRUPO_WHATSAPP = "https://chat.whatsapp.com/GilRNubPA9cH0ph244mERs";
 
 // Versão dos termos aceitos, registrada na planilha junto com o cadastro.
@@ -434,9 +555,13 @@ const TERMOS_VERSAO = "v1 (12/08/2026)";
 
 const form    = document.getElementById("form");
 const btn     = document.getElementById("btn");
-const done    = document.getElementById("done");
-const formerr = document.getElementById("formerr");
+const pronto  = document.getElementById("pronto");
+const aviso   = document.getElementById("aviso");
+const resumo  = document.getElementById("resumo");
+const lista   = document.getElementById("resumo-lista");
 const zap     = document.getElementById("whatsapp");
+
+const ICONE_ERRO = '<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>';
 
 // máscara de telefone
 zap.addEventListener("input", () => {
@@ -447,61 +572,115 @@ zap.addEventListener("input", () => {
                              : `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`;
 });
 
-function setErr(name, bad) {
-  const field = form.elements[name];
-  const box   = form.querySelector(`.err[data-for="${name}"]`);
-  field.setAttribute("aria-invalid", bad ? "true" : "false");
-  if (box) box.classList.toggle("show", bad);
-  if (name === "aceite") document.getElementById("consent").classList.toggle("ruim", bad);
-  return !bad;
+// Cada campo diz o que houve e como sair do erro. Nunca culpa quem preencheu.
+const CAMPOS = [
+  { nome:"nome",       rotulo:"Nome completo",
+    ok: v => v.length >= 3,
+    msg:"Escreve teu nome completo pra gente saber quem é." },
+  { nome:"email",      rotulo:"E-mail",
+    ok: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+    msg:"Confere o e-mail: falta o @ ou o final do endereço." },
+  { nome:"whatsapp",   rotulo:"WhatsApp",
+    ok: v => v.replace(/\D/g,"").length >= 10,
+    msg:"Coloca o DDD e o número, com 10 ou 11 dígitos." },
+  { nome:"area",       rotulo:"Sua área",        radio:"grupo-area",
+    ok: v => !!v,
+    msg:"Escolhe a área que mais tem a ver com o teu trabalho." },
+  { nome:"frequencia", rotulo:"Pretende vir",    radio:"grupo-frequencia",
+    ok: v => !!v,
+    msg:"Escolhe com que frequência você pretende aparecer." },
+  { nome:"aceite",     rotulo:"Autorização de uso dos dados", caixa:true,
+    ok: (_, el) => el.checked,
+    msg:"Marca a autorização pra gente poder guardar teus dados e te chamar." }
+];
+
+function valorDe(nome){
+  const el = form.elements[nome];
+  return (el.value || "").trim();
 }
 
-function validate() {
-  const v = n => (form.elements[n].value || "").trim();
-  let ok = true;
-  ok = setErr("nome",       v("nome").length < 3) && ok;
-  ok = setErr("email",      !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v("email"))) && ok;
-  ok = setErr("whatsapp",   v("whatsapp").replace(/\D/g, "").length < 10) && ok;
-  ok = setErr("area",       !v("area")) && ok;
-  ok = setErr("frequencia", !v("frequencia")) && ok;
-  ok = setErr("origem",     v("origem").length < 2) && ok;
-  ok = setErr("aceite",     !form.elements.aceite.checked) && ok;
-  return ok;
+function marcaErro(c, ruim){
+  const caixaErro = document.getElementById("err-" + c.nome);
+  caixaErro.innerHTML = ruim ? ICONE_ERRO + "<span>" + c.msg + "</span>" : "";
+  caixaErro.hidden = !ruim;
+
+  if (c.radio){
+    // marca o grupo, nao cada radio: senao o leitor de tela repete "invalido" 8 vezes
+    document.getElementById(c.radio).setAttribute("aria-invalid", ruim ? "true" : "false");
+  } else if (c.caixa){
+    document.getElementById("aceite").setAttribute("aria-invalid", ruim ? "true" : "false");
+    document.getElementById("consentimento").classList.toggle("ruim", ruim);
+  } else {
+    const campo = form.elements[c.nome];
+    campo.setAttribute("aria-invalid", ruim ? "true" : "false");
+    // liga a mensagem ao campo pra quem usa leitor de tela
+    const jaTem = (campo.getAttribute("aria-describedby") || "").split(" ").filter(Boolean);
+    const semErro = jaTem.filter(id => id !== "err-" + c.nome);
+    campo.setAttribute("aria-describedby", ruim ? [...semErro, "err-" + c.nome].join(" ") : semErro.join(" "));
+  }
+}
+
+// Valida no envio, não enquanto a pessoa digita.
+function validar(){
+  const falhas = [];
+  for (const c of CAMPOS){
+    const el   = form.elements[c.nome];
+    const ruim = !c.ok(valorDe(c.nome), el);
+    marcaErro(c, ruim);
+    if (ruim) falhas.push(c);
+  }
+
+  if (falhas.length){
+    lista.innerHTML = falhas.map(c =>
+      `<li><a href="#${c.radio || (c.caixa ? "aceite" : c.nome)}">${c.rotulo}: ${c.msg}</a></li>`
+    ).join("");
+    resumo.hidden = false;
+    resumo.focus();
+    // o link do resumo leva o foco pro campo
+    lista.querySelectorAll("a").forEach(a => a.addEventListener("click", e => {
+      e.preventDefault();
+      const alvo = document.querySelector(a.getAttribute("href"));
+      (alvo.querySelector ? (alvo.querySelector("input") || alvo) : alvo).focus();
+    }));
+  } else {
+    resumo.hidden = true;
+  }
+  return falhas.length === 0;
 }
 
 form.addEventListener("submit", async e => {
   e.preventDefault();
-  formerr.classList.remove("show");
+  aviso.hidden = true;
 
-  if (!validate()) {
-    form.querySelector('[aria-invalid="true"]')?.focus();
-    return;
-  }
+  if (!validar()) return;
 
   if (!/^https:\/\/script\.google\.com\/.*\/exec$/.test(ENDPOINT)) {
-    formerr.textContent = "Formulário ainda não configurado: falta colar a URL do Apps Script em ENDPOINT (veja o README).";
-    formerr.classList.add("show");
+    document.getElementById("aviso-txt").textContent =
+      "Formulário ainda não configurado: falta colar a URL do Apps Script em ENDPOINT (veja o README).";
+    aviso.hidden = false;
     return;
   }
 
   const payload = {
-    nome:       form.elements.nome.value.trim(),
-    email:      form.elements.email.value.trim(),
-    whatsapp:   form.elements.whatsapp.value.trim(),
-    area:       form.elements.area.value,
-    empresa:    form.elements.empresa.value.trim(),
-    frequencia: form.elements.frequencia.value,
-    social:     form.elements.social.value.trim(),
-    origem:     form.elements.origem.value.trim(),
-    sobre:      form.elements.sobre.value.trim(),
-    grupo:      form.elements.grupo.checked ? "Sim" : "Não",
+    nome:       valorDe("nome"),
+    email:      valorDe("email"),
+    whatsapp:   valorDe("whatsapp"),
+    area:       valorDe("area"),
+    empresa:    valorDe("empresa"),
+    frequencia: valorDe("frequencia"),
+    social:     valorDe("social"),
+    origem:     valorDe("origem"),
+    sobre:      valorDe("sobre"),
+    grupo:      form.elements.grupo.checked  ? "Sim" : "Não",
     aceite:     form.elements.aceite.checked ? "Sim" : "Não",
     termos:     TERMOS_VERSAO,
     website:    form.elements.website.value, // honeypot
     origemUrl:  location.href
   };
 
+  // desabilitado só durante o envio, pra não gravar duas vezes
   btn.disabled = true;
+  btn.setAttribute("aria-busy", "true");
   btn.textContent = "Enviando…";
 
   // text/plain evita o preflight CORS do Apps Script
@@ -528,27 +707,19 @@ form.addEventListener("submit", async e => {
       if (body && body.ok === false) throw new Error(body.erro || "recusado");
     }
 
-    form.style.display = "none";
-    done.classList.add("show");
+    form.hidden = true;
+    document.querySelector(".cartao > h2").hidden = true;
+    document.querySelector(".cartao > .sub").hidden = true;
+    pronto.hidden = false;
     document.getElementById("linkGrupo").href = GRUPO_WHATSAPP;
-    done.scrollIntoView({ behavior: "smooth", block: "center" });
-
-    // leva pro grupo, mas com o botão à mão caso o redirect seja bloqueado
-    const conta = document.getElementById("conta");
-    let resta = 5;
-    const tic = setInterval(() => {
-      resta -= 1;
-      conta.textContent = resta;
-      if (resta <= 0) {
-        clearInterval(tic);
-        location.href = GRUPO_WHATSAPP;
-      }
-    }, 1000);
+    document.getElementById("pronto-tit").focus();
   } catch (err) {
     btn.disabled = false;
+    btn.removeAttribute("aria-busy");
     btn.textContent = "Fazer meu cadastro";
-    formerr.textContent = "Não rolou enviar agora. Tenta de novo em instantes. Se insistir, chama alguém da Ilha no WhatsApp.";
-    formerr.classList.add("show");
+    document.getElementById("aviso-txt").textContent =
+      "Não deu pra enviar agora. Tenta de novo em alguns segundos. Se continuar, chama alguém da Ilha no WhatsApp.";
+    aviso.hidden = false;
   }
 });
 </script>
