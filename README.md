@@ -1,4 +1,4 @@
-# Ilha do Silício — página de cadastro
+# Ilha do Silício: página de cadastro
 
 Landing page estática com formulário que grava direto numa planilha do Google Sheets.
 Zero servidor, zero mensalidade.
@@ -17,16 +17,18 @@ Navegador → GitHub Pages (index.html) → POST → Apps Script (Web App) → G
 
 ## Como colocar no ar
 
-### 0. Preencher o e-mail de contato (LGPD)
+> **Status: no ar e ligado desde 19/08/2026.** O passo a passo abaixo fica como referência
+> para quem precisar refazer o deploy ou trocar de planilha.
 
-Em [`privacidade.html`](privacidade.html), troque `[SEU E-MAIL AQUI]` por um e-mail real e apague o
-bloco de aviso laranja. A lei exige um canal para pedidos de acesso e exclusão — sem isso, não
-divulgue a página.
+### 0. E-mail de contato (LGPD) ✅
+
+Em [`privacidade.html`](privacidade.html), a seção 10 aponta para `andreht666@gmail.com`. A lei
+exige um canal real para pedidos de acesso e exclusão. Se esse e-mail mudar, é lá que se troca.
 
 ### 1. A planilha
 
 Já está definida no script, pelo ID:
-[Ilha do Silício — Cadastros](https://docs.google.com/spreadsheets/d/1z8oxhUYd0h_mUDu35_S9UFWhjOS2y2C4N-IWb53JX6o/edit).
+[Membros Coworking Ilha do Silicio](https://docs.google.com/spreadsheets/d/1z8oxhUYd0h_mUDu35_S9UFWhjOS2y2C4N-IWb53JX6o/edit).
 Não precisa criar aba nem cabeçalho: o script faz isso sozinho no primeiro envio.
 
 Para trocar de planilha, mude a constante `PLANILHA_ID` no topo do `Codigo.gs`.
@@ -42,19 +44,15 @@ Para trocar de planilha, mude a constante `PLANILHA_ID` no topo do `Codigo.gs`.
    - **Executar como:** `Eu (seu@email.com)`
    - **Quem pode acessar:** `Qualquer pessoa` ← precisa ser este, senão a página recebe erro
 7. **Implantar** → autorize o acesso (aparece "Google não verificou este app" → *Avançado* → *Acessar projeto sem título*; é seu próprio script).
-8. Copie a **URL do app da Web** — ela termina em `/exec`.
+8. Copie a **URL do app da Web**, que termina em `/exec`.
 
 > Teste rápido: cole essa URL no navegador. Deve aparecer `{"ok":true,"servico":"ilha-do-silicio",...}`.
 
-### 3. Ligar a página no script
+### 3. Ligar a página no script ✅
 
-Em [`index.html`](index.html), troque a linha do topo do `<script>`:
-
-```js
-const ENDPOINT = "COLE_AQUI_A_URL_DO_APPS_SCRIPT";
-```
-
-pela URL `/exec` que você copiou. Commit e push:
+Em [`index.html`](index.html), a constante `ENDPOINT` no topo do `<script>` já aponta para a
+implantação `AKfycbw6JSzQbJKzNGkP4zuwx56KdK5547vUs37Mrr-NUgushA59C9CFzf6yBQ8R0c-zk0qjQA`.
+Numa implantação nova, é essa linha que muda. Commit e push:
 
 ```bash
 git add index.html && git commit -m "Configura endpoint do Apps Script" && git push
@@ -72,18 +70,18 @@ Em ~1 minuto a página fica no ar. A URL aparece nessa mesma tela.
 
 **Mudar campos do formulário.** Edite o `index.html` (o HTML do campo + o objeto `payload` no JS)
 e adicione a coluna correspondente em `COLUNAS` e no `appendRow` do `Codigo.gs`.
-Se mexer no `Codigo.gs`, é preciso **Implantar › Gerenciar implantações › ✏️ › Versão: Nova versão**
-— senão a versão antiga continua rodando.
+Se mexer no `Codigo.gs`, é preciso **Implantar › Gerenciar implantações › ✏️ › Versão: Nova versão**,
+senão a versão antiga continua rodando.
 
 **Domínio próprio.** Settings › Pages › Custom domain, e aponte um CNAME para `SEU-USUARIO.github.io`.
 
 **Spam.** Já tem honeypot (campo escondido `website`). Se aparecer lixo mesmo assim,
-o caminho é trocar por um Cloudflare Turnstile — grátis também.
+o caminho é trocar por um Cloudflare Turnstile, grátis também.
 
 **Backup.** Arquivo › Fazer download › CSV na própria planilha.
 
 **Pedido de exclusão (LGPD).** Apague a linha da pessoa na planilha e confirme por e-mail.
-As colunas `Aceitou os termos` e `Versão dos termos` existem para provar o consentimento —
+As colunas `Aceitou os termos` e `Versão dos termos` existem para provar o consentimento,
 não apague essas colunas.
 
 **Link do grupo.** Está na constante `GRUPO_WHATSAPP`, no `<script>` do `index.html`.
