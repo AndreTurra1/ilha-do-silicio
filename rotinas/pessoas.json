@@ -1,0 +1,85 @@
+{
+  "_leia": "Uma pessoa, um nome. O export do WhatsApp traz o nome que está SALVO NA AGENDA do Turra ('Zuccao 8000'); o webhook traz o nome de PERFIL que a pessoa escolheu ('Gabriel Zucco'). São a mesma pessoa e viravam duas na busca por pessoa. A tabela é escrita à mão de propósito: casar por semelhança de nome erra silencioso, e 'Bruno' de um não é o 'Bruno' do outro. Cada entrada carrega a prova de que são a mesma pessoa. Nome novo que não estiver aqui NÃO é fundido: o sync_acervo.py lista os desconhecidos no fim da rodada pra esta tabela ser mantida.",
+  "_como_manter": "Quando o sync apontar um nome desconhecido, confira quem é (a maneira barata: procurar o nome no acervo e ver a pessoa se apresentando) e acrescente aqui. Sem prova, deixa fora: pessoa duplicada é feio, pessoa fundida errado é mentira.",
+  "pessoas": [
+    {
+      "nome": "Gabriel Zucco",
+      "variantes": [
+        "Zuccao 8000"
+      ],
+      "_evidencia": "em 19/08/2026, 20:45, o 'Zuccao 8000' digitou o próprio nome completo pros ingressos do summit: 'Gabriel Zucco Moreira / zucco@inevitasociety.com'"
+    },
+    {
+      "nome": "Lucas Kochinski",
+      "variantes": [
+        "Lucas Kochiski Amazon EUA"
+      ],
+      "_evidencia": "em 19/08/2026, 21:23, digitou 'Lucas Kochinski / lucas@escolacapitalprime.com.br'. O nome da agenda tem um 'n' a menos (Kochiski), que é justamente o tipo de divergência que casamento por semelhança erra"
+    },
+    {
+      "nome": "Bernardo Brakarz",
+      "variantes": [
+        "Bernardo Brakarz IA Lendario"
+      ],
+      "_evidencia": "em 19/08/2026, 20:52, digitou 'Bernardo de Lima Brakarz / bernardo.lima@theblacksheep.com.br'"
+    },
+    {
+      "nome": "Vinícius Oliveira",
+      "variantes": [
+        "Vinícius Oliveira ♾️"
+      ],
+      "_evidencia": "em 19/08/2026, 20:42, digitou 'Vinicius Pinheiro de Oliveira / vinicius@inevitasociety.com'. A variante só difere pelo emoji do fim"
+    },
+    {
+      "nome": "Felipe Pestana",
+      "variantes": [
+        "Felipe Pestana - Pessoal"
+      ],
+      "_evidencia": "o nome do perfil é prefixo exato do nome da agenda; o '- Pessoal' é como o Turra separa do número de trabalho"
+    },
+    {
+      "nome": "Diogo Kaleo",
+      "variantes": [
+        "~ Diogo Kaleo"
+      ],
+      "_evidencia": "o '~' é o marcador do WhatsApp pra contato não salvo; o resto do nome é idêntico"
+    },
+    {
+      "nome": "Rosa Maria",
+      "variantes": [
+        "~ Rosa Maria"
+      ],
+      "_evidencia": "mesmo caso do '~' de contato não salvo"
+    },
+    {
+      "nome": "Bruno Andrighetti",
+      "variantes": [
+        "Token Bruno Bellini Andrighetti SAGAZ"
+      ],
+      "_evidencia": "nome e sobrenome batem dentro do nome longo da agenda (Bruno … Andrighetti); é o único Andrighetti do grupo"
+    },
+    {
+      "nome": "Alexandre Sagaz House",
+      "variantes": [
+        "Alexandre"
+      ],
+      "_evidencia": "único Alexandre que fala no grupo. ATENÇÃO: o nome de perfil dele é só 'Alexandre', então se entrar um segundo Alexandre esta linha vira armadilha e tem que virar duas"
+    },
+    {
+      "nome": "Felipe Postigo",
+      "variantes": [
+        "Felipe Postigo | Zeros"
+      ],
+      "_evidencia": "nome de perfil é prefixo exato do nome da agenda; o '| Zeros' é o handle da empresa dele. Apareceu na lista de desconhecidos da primeira rodada do sync, em 20/08/2026"
+    }
+  ],
+  "_pendentes": [
+    {
+      "nomes": [
+        "Bruno Fabricio | Cigano.agi",
+        "Fabricio Feitosa | Cigano.agi"
+      ],
+      "_duvida": "mesmo handle de agência ('| Cigano.agi') e nomes que se sobrepõem em 'Fabricio', mas a agência tem mais de uma pessoa e o nome de batismo difere (Bruno × Feitosa). Pode ser a mesma pessoa (Bruno Fabricio Feitosa) ou dois sócios. NÃO fundido até alguém confirmar: fundir errado atribui 383 mensagens a quem não falou"
+    }
+  ]
+}
