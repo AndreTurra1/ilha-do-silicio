@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acervo da Ilha do Silício</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Busca no histórico do grupo do Cowork Ilha do Silício.">
+<meta name="theme-color" content="#09151f">
+<style>
+  /* Mesma camada de token do index.html: o acervo é a mesma casa, não um anexo. */
+  :root{
+    color-scheme: dark;
+    --fundo:#09151f; --fundo-2:#12222e; --fundo-3:#183040;
+    --borda-fraca:#2e404c; --borda:#667b8a;
+    --txt:#edf3f7; --txt-2:#b8c7d1; --acao:#ffae52; --acao-txt:#422605;
+    --erro:#ff8173; --ok:#4cc789;
+    --e1:8px; --e2:16px; --e3:24px; --e4:32px; --e5:48px;
+    --t-xs:16px; --t-s:18px; --t-m:24px; --t-l:32px; --t-xl:44px;
+    --r1:8px; --r2:16px; --r3:32px;
+    --sombra-2:0 8px 20px -8px rgba(4,10,16,.8);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--fundo); color:var(--txt);
+    font:var(--t-s)/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .wrap{max-width:860px; margin:0 auto; padding:var(--e4) var(--e3) var(--e5)}
+  a{color:var(--acao)}
+  h1{font-size:var(--t-l); line-height:1.2; margin:0 0 var(--e1)}
+  .sub{color:var(--txt-2); margin:0 0 var(--e4)}
+  .voltar{display:inline-block; margin-bottom:var(--e3); font-size:var(--t-xs)}
+
+  /* ---- porta ---- */
+  .porta{
+    max-width:520px; margin:var(--e5) auto; background:var(--fundo-2);
+    border:1px solid var(--borda-fraca); border-radius:var(--r2);
+    padding:var(--e4); box-shadow:var(--sombra-2);
+  }
+  label{display:block; font-weight:700; margin-bottom:var(--e1)}
+  .dica{color:var(--txt-2); font-size:var(--t-xs); margin:0 0 var(--e2)}
+  input[type=password],input[type=search],input[type=text],select{
+    width:100%; padding:14px var(--e2); font:inherit; color:var(--txt);
+    background:var(--fundo); border:1px solid var(--borda); border-radius:var(--r1);
+  }
+  input:focus-visible,select:focus-visible,button:focus-visible,.res:focus-visible{
+    outline:3px solid var(--acao); outline-offset:2px;
+  }
+  .botao{
+    margin-top:var(--e2); width:100%; padding:14px var(--e3); font:inherit; font-weight:700;
+    color:var(--acao-txt); background:var(--acao); border:0; border-radius:var(--r1); cursor:pointer;
+  }
+  .botao:disabled{opacity:.6; cursor:progress}
+  .erro{color:var(--erro); font-size:var(--t-xs); margin-top:var(--e2); min-height:1.6em}
+
+  /* ---- busca ---- */
+  .barra{position:sticky; top:0; z-index:5; background:var(--fundo); padding:var(--e2) 0 var(--e2)}
+  .filtros{display:flex; gap:var(--e1); margin-top:var(--e1); flex-wrap:wrap}
+  .filtros select{width:auto; flex:1 1 160px; padding:10px var(--e2); font-size:var(--t-xs)}
+  .conta{color:var(--txt-2); font-size:var(--t-xs); margin:var(--e2) 0}
+
+  .res{
+    display:block; width:100%; text-align:left; margin-bottom:var(--e1);
+    background:var(--fundo-2); border:1px solid var(--borda-fraca); border-left:3px solid transparent;
+    border-radius:var(--r1); padding:var(--e2); color:inherit; font:inherit; cursor:pointer;
+  }
+  .res:hover{border-left-color:var(--acao); background:var(--fundo-3)}
+  .meta{font-size:var(--t-xs); color:var(--txt-2); margin-bottom:4px}
+  .meta b{color:var(--txt)}
+  mark{background:rgba(255,174,82,.28); color:var(--txt); border-radius:3px; padding:0 2px}
+  .vazio{color:var(--txt-2); text-align:center; padding:var(--e5) 0}
+
+  /* ---- dia ---- */
+  dialog{
+    width:min(760px,94vw); max-height:86vh; padding:0; color:var(--txt);
+    background:var(--fundo-2); border:1px solid var(--borda-fraca); border-radius:var(--r2);
+  }
+  dialog::backdrop{background:rgba(4,10,16,.7)}
+  .dia-topo{
+    position:sticky; top:0; background:var(--fundo-2); border-bottom:1px solid var(--borda-fraca);
+    padding:var(--e3); display:flex; justify-content:space-between; align-items:center; gap:var(--e2);
+  }
+  .dia-topo h2{margin:0; font-size:var(--t-m)}
+  .fechar{background:none; border:1px solid var(--borda); color:var(--txt); border-radius:var(--r1);
+          padding:6px 14px; cursor:pointer; font:inherit; font-size:var(--t-xs)}
+  .dia-corpo{padding:var(--e3); overflow-y:auto; max-height:calc(86vh - 84px)}
+  .msg{padding:6px 10px; border-radius:var(--r1); margin-bottom:2px}
+  .msg .h{font-size:var(--t-xs); color:var(--txt-2)}
+  .msg .h b{color:var(--acao)}
+  .msg p{margin:0; white-space:pre-wrap; overflow-wrap:anywhere}
+  .msg.alvo{background:rgba(255,174,82,.14); outline:1px solid var(--acao)}
+  .msg.sis .h b{color:var(--txt-2)}
+  .msg.sis p{color:var(--txt-2); font-style:italic}
+  .rodape{color:var(--txt-2); font-size:var(--t-xs); margin-top:var(--e4);
+          border-top:1px solid var(--borda-fraca); padding-top:var(--e2)}
+  .so-leitor{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <a class="voltar" href="./">← Ilha do Silício</a>
+  <h1>Acervo da Ilha</h1>
+  <p class="sub">Tudo que já se falou no grupo, pesquisável. Acha o assunto, vê o dia inteiro em volta.</p>
+
+  <!-- ─────────── PORTA ─────────── -->
+  <form class="porta" id="porta">
+    <label for="frase">Frase-senha do grupo</label>
+    <p class="dica">Está fixada no grupo do WhatsApp. O acervo fica cifrado aqui dentro: sem a frase, nem o Google lê.</p>
+    <input id="frase" type="password" autocomplete="current-password" autofocus>
+    <button class="botao" id="entrar" type="submit">Abrir o acervo</button>
+    <p class="erro" id="erro" role="alert"></p>
+  </form>
+
+  <!-- ─────────── BUSCA ─────────── -->
+  <div id="app" hidden>
+    <div class="barra">
+      <label class="so-leitor" for="q">Buscar no histórico</label>
+      <input id="q" type="search" placeholder="cowork, galpão, ingresso, jurerê…" autocomplete="off">
+      <div class="filtros">
+        <label class="so-leitor" for="quem">Filtrar por pessoa</label>
+        <select id="quem"><option value="">Todo mundo</option></select>
+        <label class="so-leitor" for="quando">Filtrar por período</label>
+        <select id="quando">
+          <option value="">Desde sempre</option>
+          <option value="7">Últimos 7 dias</option>
+          <option value="30">Últimos 30 dias</option>
+        </select>
+      </div>
+    </div>
+
+    <p class="conta" id="conta" role="status" aria-live="polite"></p>
+    <div id="lista"></div>
+    <p class="rodape" id="rodape"></p>
+  </div>
+</div>
+
+<dialog id="dlg" aria-labelledby="dia-tit">
+  <div class="dia-topo">
+    <h2 id="dia-tit"></h2>
+    <button class="fechar" id="fechar" type="button">Fechar</button>
+  </div>
+  <div class="dia-corpo" id="dia-corpo"></div>
+</dialog>
+
+<script>
+const CHAVE_LOCAL = "ilha-acervo-frase";
+const ITER = 310000;
+let D = null, NORM = [], POR_DIA = new Map();
+
+const $ = id => document.getElementById(id);
+const norm = s => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const DIAS = ["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+
+function dataBonita(iso){
+  const [a,m,d] = iso.split("-").map(Number);
+  const dt = new Date(a, m-1, d);
+  return `${DIAS[dt.getDay()]}, ${String(d).padStart(2,"0")}/${String(m).padStart(2,"0")}/${a}`;
+}
+
+async function decifrar(buf, frase){
+  const salt = buf.slice(0, 16), iv = buf.slice(16, 28), ct = buf.slice(28);
+  const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(frase), "PBKDF2", false, ["deriveKey"]);
+  const chave = await crypto.subtle.deriveKey(
+    { name:"PBKDF2", salt, iterations:ITER, hash:"SHA-256" },
+    base, { name:"AES-GCM", length:256 }, false, ["decrypt"]);
+  // GCM autentica: frase errada estoura aqui, não devolve lixo silencioso
+  const gz = await crypto.subtle.decrypt({ name:"AES-GCM", iv }, chave, ct);
+  const fluxo = new Blob([gz]).stream().pipeThrough(new DecompressionStream("gzip"));
+  return JSON.parse(await new Response(fluxo).text());
+}
+
+function preparar(dados){
+  D = dados;
+  NORM = D.msgs.map(m => norm(m[3]));
+  POR_DIA = new Map();
+  D.msgs.forEach((m, i) => {
+    if (!POR_DIA.has(m[0])) POR_DIA.set(m[0], []);
+    POR_DIA.get(m[0]).push(i);
+  });
+
+  const sel = $("quem");
+  // ordena por quem mais fala, que é a ordem que o build já entregou
+  D.autores.forEach((a, i) => {
+    const o = document.createElement("option");
+    o.value = i; o.textContent = a;
+    sel.appendChild(o);
+  });
+
+  const r = D.resumo;
+  $("rodape").textContent =
+    `${r.uteis.toLocaleString("pt-BR")} mensagens de ${r.pessoas} pessoas, de ${dataBonita(r.primeiro_dia)} a ${dataBonita(r.ultimo_dia)}. ` +
+    `Atualizado em ${new Date(D.gerado_em).toLocaleString("pt-BR")}.`;
+}
+
+function buscar(){
+  const termos = norm($("q").value).split(/\s+/).filter(Boolean);
+  const quem = $("quem").value === "" ? null : Number($("quem").value);
+  const dias = Number($("quando").value || 0);
+  let corte = null;
+  if (dias){
+    const d = new Date(D.resumo.ultimo_dia);
+    d.setDate(d.getDate() - dias);
+    corte = d.toISOString().slice(0, 10);
+  }
+
+  const achados = [];
+  for (let i = 0; i < D.msgs.length; i++){
+    const m = D.msgs[i];
+    if (D.tipos[m[4]] === "sistema") continue;
+    if (quem !== null && m[2] !== quem) continue;
+    if (corte && m[0] < corte) continue;
+    if (termos.length && !termos.every(t => NORM[i].includes(t))) continue;
+    achados.push(i);
+  }
+  // mais recente primeiro: no grupo, o que importa quase sempre é a última vez que se falou
+  achados.reverse();
+  mostrar(achados, termos);
+}
+
+function realce(texto, termos){
+  let saida = esc(texto);
+  if (!termos.length) return saida;
+  const alvo = norm(saida);
+  const marcas = [];
+  for (const t of termos){
+    let p = alvo.indexOf(t);
+    while (p !== -1){ marcas.push([p, p + t.length]); p = alvo.indexOf(t, p + t.length); }
+  }
+  if (!marcas.length) return saida;
+  marcas.sort((a,b) => a[0]-b[0]);
+  const juntas = [marcas[0]];
+  for (const [i, f] of marcas.slice(1)){
+    const u = juntas[juntas.length-1];
+    if (i <= u[1]) u[1] = Math.max(u[1], f); else juntas.push([i, f]);
+  }
+  let out = "", ant = 0;
+  for (const [i, f] of juntas){
+    out += saida.slice(ant, i) + "<mark>" + saida.slice(i, f) + "</mark>";
+    ant = f;
+  }
+  return out + saida.slice(ant);
+}
+
+function trecho(texto, termos){
+  if (texto.length <= 220 || !termos.length) return texto.slice(0, 260);
+  const p = norm(texto).indexOf(termos[0]);
+  if (p < 0) return texto.slice(0, 260);
+  const i = Math.max(0, p - 80);
+  return (i ? "…" : "") + texto.slice(i, i + 240) + (i + 240 < texto.length ? "…" : "");
+}
+
+function mostrar(achados, termos){
+  const lista = $("lista"), conta = $("conta");
+  const n = achados.length;
+  conta.textContent = termos.length
+    ? `${n.toLocaleString("pt-BR")} ${n === 1 ? "mensagem fala" : "mensagens falam"} disso`
+    : `${n.toLocaleString("pt-BR")} mensagens no acervo`;
+
+  if (!n){
+    lista.innerHTML = '<p class="vazio">Ninguém tocou nesse assunto ainda. Que tal ser o primeiro?</p>';
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for (const i of achados.slice(0, 300)){
+    const m = D.msgs[i];
+    const tipo = D.tipos[m[4]];
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "res";
+    b.dataset.i = i;
+    b.innerHTML =
+      `<div class="meta"><b>${esc(D.autores[m[2]])}</b> · ${dataBonita(m[0])} às ${m[1]}</div>` +
+      (tipo === "texto"
+        ? `<div>${realce(trecho(m[3], termos), termos)}</div>`
+        : `<div class="meta">[${tipo}]</div>`);
+    frag.appendChild(b);
+  }
+  lista.replaceChildren(frag);
+  if (n > 300){
+    const p = document.createElement("p");
+    p.className = "conta";
+    p.textContent = `Mostrando as 300 mais recentes. Refina a busca pra ver o resto.`;
+    lista.appendChild(p);
+  }
+}
+
+function abrirDia(alvo){
+  const m = D.msgs[alvo];
+  $("dia-tit").textContent = dataBonita(m[0]);
+  const corpo = $("dia-corpo");
+  const frag = document.createDocumentFragment();
+
+  for (const i of POR_DIA.get(m[0])){
+    const x = D.msgs[i];
+    const tipo = D.tipos[x[4]];
+    const div = document.createElement("div");
+    div.className = "msg" + (i === alvo ? " alvo" : "") + (tipo === "sistema" ? " sis" : "");
+    if (i === alvo) div.id = "alvo";
+    div.innerHTML =
+      `<div class="h"><b>${esc(D.autores[x[2]])}</b> · ${x[1]}</div>` +
+      (tipo === "texto" || tipo === "sistema"
+        ? `<p>${esc(x[3])}</p>`
+        : `<p class="h">[${tipo}]</p>`);
+    frag.appendChild(div);
+  }
+  corpo.replaceChildren(frag);
+  $("dlg").showModal();
+  document.getElementById("alvo")?.scrollIntoView({ block: "center" });
+}
+
+/* ─────────── porta ─────────── */
+async function abrir(frase){
+  const btn = $("entrar");
+  btn.disabled = true; btn.textContent = "Abrindo…"; $("erro").textContent = "";
+  try {
+    const r = await fetch("acervo/dados.enc", { cache: "no-cache" });
+    if (!r.ok) throw new Error("arquivo");
+    const dados = await decifrar(await r.arrayBuffer(), frase);
+    localStorage.setItem(CHAVE_LOCAL, frase);
+    preparar(dados);
+    $("porta").hidden = true;
+    $("app").hidden = false;
+    buscar();
+    $("q").focus();
+  } catch (e) {
+    localStorage.removeItem(CHAVE_LOCAL);
+    $("erro").textContent = e.message === "arquivo"
+      ? "Não achei o acervo. Avisa o Turra."
+      : "Essa frase não abre o acervo. Confere a mensagem fixada no grupo.";
+    btn.disabled = false; btn.textContent = "Abrir o acervo";
+    $("frase").focus();
+  }
+}
+
+$("porta").addEventListener("submit", e => { e.preventDefault(); abrir($("frase").value.trim()); });
+$("q").addEventListener("input", buscar);
+$("quem").addEventListener("change", buscar);
+$("quando").addEventListener("change", buscar);
+$("lista").addEventListener("click", e => {
+  const b = e.target.closest(".res");
+  if (b) abrirDia(Number(b.dataset.i));
+});
+$("fechar").addEventListener("click", () => $("dlg").close());
+
+// já entrou uma vez neste navegador: não pede de novo
+const guardada = localStorage.getItem(CHAVE_LOCAL);
+if (guardada) abrir(guardada);
+</script>
+</body>
+</html>
