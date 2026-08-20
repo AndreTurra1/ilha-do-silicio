@@ -568,8 +568,14 @@
 
           <div class="campo">
             <label for="origem">Como conheceu a Ilha do Silício <span class="marca">(opcional)</span></label>
-            <p class="dica" id="dica-origem">Indicação de alguém, evento, Instagram…</p>
+            <p class="dica" id="dica-origem">Evento, Instagram, passou na porta…</p>
             <input id="origem" name="origem" type="text" aria-describedby="dica-origem">
+          </div>
+
+          <div class="campo">
+            <label for="indicacao">Quem te indicou <span class="marca">(opcional)</span></label>
+            <p class="dica" id="dica-indicacao">Nome de quem te falou da ilha, pra gente agradecer. Se chegou por conta própria, deixa em branco.</p>
+            <input id="indicacao" name="indicacao" type="text" autocomplete="off" aria-describedby="dica-indicacao">
           </div>
 
           <div class="campo">
@@ -823,6 +829,7 @@ form.addEventListener("submit", async e => {
     frequencia: valorDe("frequencia"),
     social:     valorDe("social"),
     origem:     valorDe("origem"),
+    indicacao:  valorDe("indicacao"),
     sobre:      valorDe("sobre"),
     grupo:      form.elements.grupo.checked  ? "Sim" : "Não",
     aceite:     form.elements.aceite.checked ? "Sim" : "Não",

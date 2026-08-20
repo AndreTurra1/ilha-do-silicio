@@ -17,7 +17,8 @@ const NOTIFICAR_EMAIL = '';
 const COLUNAS = [
   'Data/Hora', 'Nome', 'E-mail', 'WhatsApp', 'Área', 'Empresa/Projeto',
   'Frequência', 'Instagram/LinkedIn', 'Como conheceu', 'Sobre',
-  'Entrar no grupo', 'Aceitou os termos', 'Versão dos termos', 'Origem'
+  'Entrar no grupo', 'Aceitou os termos', 'Versão dos termos', 'Origem',
+  'Quem indicou'
 ];
 
 function doPost(e) {
@@ -53,7 +54,8 @@ function doPost(e) {
         String(d.grupo      || '').slice(0, 10),
         String(d.aceite     || '').slice(0, 10),
         String(d.termos     || '').slice(0, 40),
-        String(d.origemUrl  || '').slice(0, 300)
+        String(d.origemUrl  || '').slice(0, 300),
+        String(d.indicacao  || '').slice(0, 200)
       ]);
     } finally {
       lock.releaseLock();
@@ -72,6 +74,7 @@ function doPost(e) {
           'Frequência: ' + (d.frequencia || ''),
           'Social: '     + (d.social     || ''),
           'Conheceu: '   + (d.origem     || ''),
+          'Indicado por: ' + (d.indicacao || ''),
           '',
           (d.sobre || '')
         ].join('\n')
@@ -102,6 +105,18 @@ function getAba() {
        .setFontColor('#ffffff');
     aba.setFrozenRows(1);
     aba.setColumnWidths(1, COLUNAS.length, 160);
+  } else {
+    // Planilha antiga: completa o cabeçalho com as colunas que passaram a existir depois.
+    const largura = aba.getLastColumn();
+    if (largura < COLUNAS.length) {
+      const faltam = COLUNAS.slice(largura);
+      aba.getRange(1, largura + 1, 1, faltam.length)
+         .setValues([faltam])
+         .setFontWeight('bold')
+         .setBackground('#111823')
+         .setFontColor('#ffffff');
+      aba.setColumnWidths(largura + 1, faltam.length, 160);
+    }
   }
   return aba;
 }
