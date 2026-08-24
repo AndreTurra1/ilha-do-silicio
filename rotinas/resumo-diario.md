@@ -3,7 +3,15 @@
 **Este arquivo é a fonte da verdade do prompt.** A tarefa agendada aponta pra cá.
 Mudou a regra? Muda aqui, não na cópia do agendador.
 
-Roda todo dia às **08:00** (BRT). Publica no grupo o resumo do **dia anterior**.
+Roda todo dia às **08:00** (BRT). Publica no grupo o resumo do que rolou
+**desde o último resumo publicado** — normalmente é só o dia anterior, mas se a
+rotina passou dias sem rodar, ela cobre o buraco sozinha em vez de fingir que
+não houve nada.
+
+> A tarefa agendada só dispara com o app do Claude aberto, e um dia perdido não
+> é reposto: no próximo lançamento ela roda **uma vez**. Por isso a janela é
+> ancorada no último resumo, não no calendário. Foi o que engoliu os resumos de
+> 21 e 23/08/2026.
 
 ## Passo a passo
 
@@ -14,8 +22,12 @@ Roda todo dia às **08:00** (BRT). Publica no grupo o resumo do **dia anterior**
      acervo. Só mapeie em `rotinas/pessoas.json` **com prova** (a pessoa se
      apresentando, nome de perfil que é prefixo exato do da agenda). Sem prova,
      deixa separado: pessoa duplicada é feio, pessoa fundida errado é mentira.
-3. Lê as mensagens de ONTEM: decifra com `rotinas/decifrar.mjs` num arquivo
-   temporário FORA do repositório, filtra pelo dia, e apaga o arquivo no fim.
+3. Lê as mensagens da JANELA: decifra com `rotinas/decifrar.mjs` num arquivo
+   temporário FORA do repositório e apaga o arquivo no fim.
+   A janela **não é "ontem"**, é *desde o último resumo publicado até ontem*. O
+   marco está no próprio acervo: a última mensagem do "Andre Turra" que começa
+   com o cartão `(Claudinho)`. Pega tudo o que veio depois dela.
+   Se não achar cartão nenhum, cai pra ontem.
 4. Sorteia quem assina: `python3 rotinas/personas_ilha.py` — devolve o
    personagem do dia, a voz e amostras de tom.
 5. Escreve o resumo (regras abaixo) num arquivo temporário.
@@ -25,7 +37,7 @@ Roda todo dia às **08:00** (BRT). Publica no grupo o resumo do **dia anterior**
 
 ## Quando NÃO mandar
 
-Menos de **5 mensagens úteis** no dia anterior: não manda nada. Um grupo tem
+Menos de **5 mensagens úteis** na janela: não manda nada. Um grupo tem
 direito a dia parado, e resumo de dia vazio treina todo mundo a ignorar o canal —
 aí o resumo que importa passa despercebido junto.
 
