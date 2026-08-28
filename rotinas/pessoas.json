@@ -78,6 +78,41 @@
         "Safir"
       ],
       "_evidencia": "nome de perfil ('Safir') é prefixo exato do nome da agenda ('Safir Tubarao 🦈'), mesmo padrão do Felipe Pestana/Felipe Postigo. Apareceu na lista de desconhecidos do sync em 24/08/2026"
+    },
+    {
+      "nome": "João P. Sambatti",
+      "variantes": [
+        "~ João P. Sambatti"
+      ],
+      "_evidencia": "o '~' é o marcador do WhatsApp pra contato não salvo; o resto do nome é idêntico, mesmo caso do Diogo Kaleo e da Rosa Maria. Apareceu na lista de desconhecidos do sync em 25/08/2026"
+    },
+    {
+      "nome": "Lourena Designer",
+      "variantes": [
+        "Lourena"
+      ],
+      "_evidencia": "nome de perfil ('Lourena') é prefixo exato do nome da agenda ('Lourena Designer'), mesmo padrão do Felipe Postigo e do Safir. Apareceu na lista de desconhecidos do sync em 25/08/2026"
+    },
+    {
+      "nome": "Gabriel Augusto",
+      "variantes": [
+        "~ Gabriel Augusto"
+      ],
+      "_evidencia": "o '~' é o marcador do WhatsApp pra contato não salvo; o resto do nome é idêntico, mesmo caso do João P. Sambatti e do Diogo Kaleo. Apareceu na lista de desconhecidos do sync em 28/08/2026"
+    },
+    {
+      "nome": "João Pinho",
+      "variantes": [
+        "~ João Pinho"
+      ],
+      "_evidencia": "o '~' é o marcador do WhatsApp pra contato não salvo; o resto do nome é idêntico, mesmo caso do João P. Sambatti e da Rosa Maria. Apareceu na lista de desconhecidos do sync em 28/08/2026"
+    },
+    {
+      "nome": "Allan Moreno",
+      "variantes": [
+        "Allan"
+      ],
+      "_evidencia": "nome de perfil ('Allan') é prefixo exato do nome da agenda ('Allan Moreno'), mesmo padrão do Felipe Postigo, do Safir e da Lourena. Apareceu na lista de desconhecidos do sync em 28/08/2026"
     }
   ],
   "_pendentes": [
