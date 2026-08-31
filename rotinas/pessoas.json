@@ -40,14 +40,14 @@
     {
       "nome": "Diogo Kaleo",
       "variantes": [
-        "~ Diogo Kaleo"
+        "~ Diogo Kaleo"
       ],
       "_evidencia": "o '~' é o marcador do WhatsApp pra contato não salvo; o resto do nome é idêntico"
     },
     {
       "nome": "Rosa Maria",
       "variantes": [
-        "~ Rosa Maria"
+        "~ Rosa Maria"
       ],
       "_evidencia": "mesmo caso do '~' de contato não salvo"
     },
@@ -113,6 +113,27 @@
         "Allan"
       ],
       "_evidencia": "nome de perfil ('Allan') é prefixo exato do nome da agenda ('Allan Moreno'), mesmo padrão do Felipe Postigo, do Safir e da Lourena. Apareceu na lista de desconhecidos do sync em 28/08/2026"
+    },
+    {
+      "nome": "Sarah Ioci",
+      "variantes": [
+        "Sarah Ioci Sagaz House"
+      ],
+      "_evidencia": "o nome de perfil 'Sarah Ioci' e prefixo exato do nome da agenda 'Sarah Ioci Sagaz House' (mesma prova aceita no caso Felipe Pestana)"
+    },
+    {
+      "nome": "Joseph Lucas",
+      "variantes": [
+        "~ Joseph Lucas"
+      ],
+      "_evidencia": "nome identico; a variante so carrega o marcador '~' + narrow-nbsp que o WhatsApp poe na frente de quem nao esta na agenda"
+    },
+    {
+      "nome": "Brunno González 🤖",
+      "variantes": [
+        "~ Brunno González 🤖"
+      ],
+      "_evidencia": "nome identico, emoji incluso; a variante so carrega o marcador '~' + narrow-nbsp de contato nao salvo"
     }
   ],
   "_pendentes": [
