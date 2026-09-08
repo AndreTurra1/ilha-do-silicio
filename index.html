@@ -224,7 +224,7 @@
   }
   textarea{resize:vertical;min-height:120px;padding-top:var(--e2)}
   /* largura casada com o que se espera digitar */
-  #whatsapp{max-width:16ch}
+  #whatsapp{max-width:22ch}
   input:focus-visible,textarea:focus-visible{
     outline:3px solid var(--acao);outline-offset:2px;border-color:var(--acao);
   }
@@ -507,10 +507,10 @@
 
           <div class="campo">
             <label for="whatsapp">WhatsApp <span class="marca">(obrigatório)</span></label>
-            <p class="dica" id="dica-whatsapp">Com DDD. É por aqui que a gente te chama.</p>
+            <p class="dica" id="dica-whatsapp">Com DDD. Fora do Brasil, começa com + e o código do país (ex.: +1 415 555 2671). É por aqui que a gente te chama.</p>
             <div class="erro" id="err-whatsapp" hidden></div>
             <input id="whatsapp" name="whatsapp" type="tel" autocomplete="tel" inputmode="tel"
-                   maxlength="16" aria-describedby="dica-whatsapp" required>
+                   maxlength="22" aria-describedby="dica-whatsapp" required>
           </div>
         </section>
 
@@ -676,7 +676,13 @@ let passoAtual = 1;
 const ICONE_ERRO = '<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M10 1.6 19 18H1L10 1.6Zm0 5.6a1 1 0 0 0-1 1v4a1 1 0 0 0 2 0v-4a1 1 0 0 0-1-1Zm0 8.8a1.2 1.2 0 1 0 0-2.4 1.2 1.2 0 0 0 0 2.4Z"/></svg>';
 
 // máscara de telefone
+// Brasil por padrão. Começou com "+", é número de fora: a máscara sai da frente
+// e a pessoa escreve do jeito do país dela, só sem letra e sem símbolo estranho.
 zap.addEventListener("input", () => {
+  if (zap.value.trimStart().startsWith("+")){
+    zap.value = "+" + zap.value.replace(/^\s*\+/, "").replace(/[^\d\s().-]/g, "");
+    return;
+  }
   const d = zap.value.replace(/\D/g, "").slice(0, 11);
   zap.value = d.length <= 2  ? d
             : d.length <= 6  ? `(${d.slice(0,2)}) ${d.slice(2)}`
@@ -694,8 +700,12 @@ const CAMPOS = [
     ok: v => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
     msg:"Confere o e-mail: falta o @ ou o final do endereço." },
   { passo:1, nome:"whatsapp",   rotulo:"WhatsApp",
-    ok: v => v.replace(/\D/g,"").length >= 10,
-    msg:"Coloca o DDD e o número, com 10 ou 11 dígitos." },
+    // no Brasil, DDD + número. Fora, "+" e o código do país (E.164 vai até 15 dígitos).
+    ok: v => {
+      const d = v.replace(/\D/g,"").length;
+      return v.trimStart().startsWith("+") ? (d >= 8 && d <= 15) : (d >= 10 && d <= 11);
+    },
+    msg:"Coloca o DDD e o número, com 10 ou 11 dígitos. De fora do Brasil, começa com + e o código do país." },
   { passo:2, nome:"area",       rotulo:"Sua área",      radio:"grupo-area",
     ok: v => !!v,
     msg:"Escolhe a área que mais tem a ver com o teu trabalho." },
