@@ -537,13 +537,15 @@
           </fieldset>
 
           <div class="campo">
-            <label for="empresa">Empresa ou projeto <span class="marca">(opcional)</span></label>
-            <input id="empresa" name="empresa" type="text" autocomplete="organization">
+            <label for="empresa">Empresa ou projeto <span class="marca">(obrigatório)</span></label>
+            <div class="erro" id="err-empresa" hidden></div>
+            <input id="empresa" name="empresa" type="text" autocomplete="organization" required>
           </div>
 
           <div class="campo">
-            <label for="social">Instagram ou LinkedIn <span class="marca">(opcional)</span></label>
-            <input id="social" name="social" type="text" autocapitalize="none">
+            <label for="social">Instagram ou LinkedIn <span class="marca">(obrigatório)</span></label>
+            <div class="erro" id="err-social" hidden></div>
+            <input id="social" name="social" type="text" autocapitalize="none" required>
           </div>
         </section>
 
@@ -579,9 +581,10 @@
           </div>
 
           <div class="campo">
-            <label for="sobre">Conta um pouco do que você faz <span class="marca">(opcional)</span></label>
+            <label for="sobre">Conta um pouco do que você faz <span class="marca">(obrigatório)</span></label>
             <p class="dica" id="dica-sobre">No que você está trabalhando hoje e o que te traria pro espaço.</p>
-            <textarea id="sobre" name="sobre" aria-describedby="dica-sobre"></textarea>
+            <div class="erro" id="err-sobre" hidden></div>
+            <textarea id="sobre" name="sobre" aria-describedby="dica-sobre" required></textarea>
           </div>
 
           <div class="campo">
@@ -709,9 +712,18 @@ const CAMPOS = [
   { passo:2, nome:"area",       rotulo:"Sua área",      radio:"grupo-area",
     ok: v => !!v,
     msg:"Escolhe a área que mais tem a ver com o teu trabalho." },
+  { passo:2, nome:"empresa",    rotulo:"Empresa ou projeto",
+    ok: v => v.length >= 2,
+    msg:"Escreve o nome da empresa ou do projeto. Se ainda não tem nome, conta o que é." },
+  { passo:2, nome:"social",     rotulo:"Instagram ou LinkedIn",
+    ok: v => v.length >= 3,
+    msg:"Coloca teu @ do Instagram ou o link do LinkedIn, pra galera te achar." },
   { passo:3, nome:"frequencia", rotulo:"Pretende vir",  radio:"grupo-frequencia",
     ok: v => !!v,
     msg:"Escolhe com que frequência você pretende aparecer." },
+  { passo:3, nome:"sobre",      rotulo:"O que você faz",
+    ok: v => v.length >= 10,
+    msg:"Conta em uma ou duas frases no que você está trabalhando hoje." },
   { passo:3, nome:"aceite",     rotulo:"Autorização de uso dos dados", caixa:true,
     ok: (_, el) => el.checked,
     msg:"Marca a autorização pra gente poder guardar teus dados e te chamar." }
