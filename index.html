@@ -8,6 +8,9 @@
 <meta property="og:title" content="Alguém nessa sala já resolveu o problema que trava você hoje">
 <meta property="og:description" content="O coworking de quem constrói em Florianópolis. Você pergunta hoje e sai com a resposta pronta. Encontro toda semana, grupo no WhatsApp e o cérebro da ilha.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://andreturra1.github.io/ilha-do-silicio/fotos/web/2026-09-03_varanda-selfie.jpg">
+<meta property="og:image:width" content="1600">
+<meta property="og:image:height" content="900">
 <meta name="theme-color" content="#09151f">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏝️</text></svg>">
 <style>
@@ -88,7 +91,8 @@
   /* ============================================================
      CENA: amanhecer na ilha (ilustração, aria-hidden)
      ============================================================ */
-  .cena{position:relative;isolation:isolate}
+  /* clip: as ondas têm 200% de largura e, sem isto, alargavam a página no celular */
+  .cena{position:relative;isolation:isolate;overflow-x:clip}
   .ceu{
     position:absolute;inset:0;z-index:-3;
     background:
@@ -385,6 +389,45 @@
   .pronto p{color:var(--txt-2);margin:0 auto;max-width:44ch;font-size:var(--t-s)}
   .pronto .botao{max-width:360px;margin:var(--e4) auto 0}
 
+  /* ============================================================
+     EDIÇÕES: prova de que acontece, logo depois do formulário
+     ============================================================ */
+  .edicoes{margin-top:var(--e6)}
+  .edicoes > h2{
+    font-size:var(--t-l);font-weight:700;line-height:1.2;letter-spacing:-.02em;
+    margin:0 0 var(--e1);
+  }
+  .edicoes > .sub{color:var(--txt-2);margin:0 0 var(--e4)}
+  .edicao{margin-bottom:var(--e5)}
+  .edicao h3{font-size:var(--t-m);font-weight:700;line-height:1.3;margin:0 0 var(--e2)}
+  .edicao .data{display:block;font-size:var(--t-xs);font-weight:400;color:var(--txt-2)}
+  .grade{
+    list-style:none;margin:0;padding:0;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:var(--e1);
+  }
+  @media (min-width:600px){ .grade{grid-template-columns:repeat(3,1fr)} }
+  .grade li{aspect-ratio:3/4;border-radius:var(--r1);overflow:hidden;background:var(--fundo-2)}
+  .grade li.larga{grid-column:1/-1;aspect-ratio:16/9}
+  .grade a{display:block;height:100%}
+  .grade img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .3s}
+  .grade a:hover img{transform:scale(1.04)}
+  @media (prefers-reduced-motion:reduce){ .grade img{transition:none} }
+  .subir{display:inline-flex;align-items:center;font-size:var(--t-s)}
+
+  .lupa{
+    padding:0;border:0;background:none;max-width:100vw;max-height:100dvh;
+    width:100vw;height:100dvh;
+  }
+  .lupa[open]{display:grid;place-items:center}
+  .lupa::backdrop{background:rgba(4,10,16,.92)}
+  .lupa img{max-width:calc(100vw - 32px);max-height:calc(100dvh - 96px);border-radius:var(--r1);box-shadow:var(--sombra-3)}
+  .lupa .fechar{
+    position:fixed;top:var(--e2);right:var(--e2);
+    width:48px;height:48px;border-radius:50%;border:1px solid var(--borda);
+    background:var(--fundo-2);color:var(--txt);font-size:var(--t-l);line-height:1;cursor:pointer;
+  }
+  .ver-fotos{display:inline-block;margin-top:var(--e2);color:var(--acao);font-weight:700;text-underline-offset:3px}
+
   footer{
     text-align:center;color:var(--txt-2);font-size:var(--t-xs);
     padding:var(--e5) var(--e2) var(--e5);
@@ -459,6 +502,7 @@
       Founders, devs, produto e marketing construindo empresa aqui na ilha. Encontro toda
       semana, grupo no WhatsApp e o que já foi testado e deu certo, escrito e à mão.
     </p>
+    <a class="ver-fotos" href="#edicoes">Ver fotos das duas primeiras edições</a>
   </div>
 </div>
 
@@ -643,6 +687,46 @@
         <a class="botao" id="linkGrupo" href="#" target="_blank" rel="noopener">Entrar no grupo do WhatsApp</a>
       </div>
     </main>
+
+    <!-- ══════════════ EDIÇÕES ══════════════
+         Fotos geradas por rotinas/build_fotos.py a partir de acervo/fotos/catalogo.json,
+         que guarda o link original do Google Fotos de cada uma. -->
+    <section class="edicoes" id="edicoes" aria-labelledby="tit-edicoes">
+      <h2 id="tit-edicoes">Como foram as duas primeiras edições</h2>
+      <p class="sub">A gente trabalha junto de dia e fica pra resenha de noite.</p>
+
+      <div class="edicao">
+        <h3>1ª edição <span class="data">quinta, 03/09 · varanda com vista pro mar</span></h3>
+        <ul class="grade">
+          <li class="larga"><a href="fotos/web/2026-09-03_varanda-selfie.jpg"><img src="fotos/mini/2026-09-03_varanda-selfie.jpg" alt="Selfie da galera na varanda no fim de tarde, com o morro e o mar atrás" loading="lazy" width="720" height="405"></a></li>
+          <li><a href="fotos/web/2026-09-03_sala-vista.jpg"><img src="fotos/mini/2026-09-03_sala-vista.jpg" alt="Notebook aberto na mesa, com a galera trabalhando na frente da janela de vidro" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-03_mesa.jpg"><img src="fotos/mini/2026-09-03_mesa.jpg" alt="Três pessoas trabalhando em volta da mesa da sala" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-03_por-do-sol.jpg"><img src="fotos/mini/2026-09-03_por-do-sol.jpg" alt="Pôr do sol laranja na varanda, com alguém trabalhando no banco alto" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-03_varanda-resenha.jpg"><img src="fotos/mini/2026-09-03_varanda-resenha.jpg" alt="Participante sorrindo na sala, de boné, no fim do dia" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-03_churrasco.jpg"><img src="fotos/mini/2026-09-03_churrasco.jpg" alt="Participante preparando a carne do churrasco no balcão da cozinha" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-03_cozinha.jpg"><img src="fotos/mini/2026-09-03_cozinha.jpg" alt="Galera reunida em volta do balcão da cozinha à noite" loading="lazy" width="405" height="720"></a></li>
+        </ul>
+      </div>
+
+      <div class="edicao">
+        <h3>2ª edição <span class="data">sexta, 18/09 · casa com piscina</span></h3>
+        <ul class="grade">
+          <li><a href="fotos/web/2026-09-18_piscina-trabalho.jpg"><img src="fotos/mini/2026-09-18_piscina-trabalho.jpg" alt="Galera trabalhando na área gourmet, com a piscina na frente" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-18_casa-piscina.jpg"><img src="fotos/mini/2026-09-18_casa-piscina.jpg" alt="A casa com a piscina e o pessoal na varanda de trás" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-18_area-gourmet.jpg"><img src="fotos/mini/2026-09-18_area-gourmet.jpg" alt="Grupo conversando no balcão da área gourmet, ao lado da piscina" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-18_casa.jpg"><img src="fotos/mini/2026-09-18_casa.jpg" alt="Fachada da casa de tijolinho com o deck de madeira" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-18_entrada.jpg"><img src="fotos/mini/2026-09-18_entrada.jpg" alt="Entrada da casa, cercada de verde" loading="lazy" width="405" height="720"></a></li>
+          <li><a href="fotos/web/2026-09-18_resenha.jpg"><img src="fotos/mini/2026-09-18_resenha.jpg" alt="Resenha à noite, com uma panela rodando na mesa" loading="lazy" width="405" height="720"></a></li>
+        </ul>
+      </div>
+
+      <a class="terciario subir" href="#cartao">Quero a próxima: fazer meu cadastro</a>
+    </section>
+
+    <dialog class="lupa" id="lupa" aria-label="Foto ampliada">
+      <img id="lupa-img" alt="">
+      <button class="fechar" type="button" id="lupa-fechar" aria-label="Fechar foto">×</button>
+    </dialog>
 
     <footer>
       <p><a href="historico.html">Acervo da ilha</a> · tudo que já se falou no grupo, pesquisável</p>
@@ -907,6 +991,24 @@ form.addEventListener("submit", async e => {
 });
 
 mostraPasso(1);
+
+// Fotos das edições: abre grande por cima da página. Sem JS, o link abre a imagem.
+const lupa = document.getElementById("lupa");
+const lupaImg = document.getElementById("lupa-img");
+if (lupa.showModal) {
+  document.querySelectorAll(".grade a").forEach(a => {
+    a.addEventListener("click", e => {
+      e.preventDefault();
+      const mini = a.querySelector("img");
+      lupaImg.src = a.href;
+      lupaImg.alt = mini.alt;
+      lupa.showModal();
+    });
+  });
+  document.getElementById("lupa-fechar").addEventListener("click", () => lupa.close());
+  lupa.addEventListener("click", e => { if (e.target === lupa) lupa.close(); });
+  lupa.addEventListener("close", () => { lupaImg.src = ""; });
+}
 </script>
 </body>
 </html>

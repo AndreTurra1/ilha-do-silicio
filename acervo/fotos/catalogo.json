@@ -1,0 +1,364 @@
+{
+ "sobre": "Acervo de fotos e vídeos das edições do Cowork Ilha do Silício. Os links do Google Fotos abrem na conta dona dos arquivos (andreht666@gmail.com). Itens pessoais e prints do mesmo dia ficaram fora.",
+ "edicoes": [
+  {
+   "id": "2026-09-03",
+   "data": "03/09/2026",
+   "nome": "1ª edição",
+   "lugar": "Apartamento com varanda e vista pro mar"
+  },
+  {
+   "id": "2026-09-18",
+   "data": "18/09/2026",
+   "nome": "2ª edição",
+   "lugar": "Casa com piscina e área gourmet"
+  }
+ ],
+ "itens": [
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "15:03:30",
+   "tipo": "video",
+   "arquivo": "IMG_2743.MOV",
+   "descricao": "Galera trabalhando na mesa da sala",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMWb0L2RQIDFmTFKkOAmKcMLpJdsCon0yUoqXTD",
+   "duracao_s": 51.7,
+   "web": {
+    "nome": "2026-09-03_mesa",
+    "mini": "fotos/mini/2026-09-03_mesa.jpg",
+    "grande": "fotos/web/2026-09-03_mesa.jpg",
+    "frame": 0.2
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:27:37",
+   "tipo": "foto",
+   "arquivo": "IMG_2745.HEIC",
+   "descricao": "Notebook na mesa, sala com vista pro mar",
+   "google_fotos": "https://photos.google.com/photo/AF1QipO86a23alcRjCsiimfdxrCl9HQ0qCs5rf95m6hg",
+   "web": {
+    "nome": "2026-09-03_sala-vista",
+    "mini": "fotos/mini/2026-09-03_sala-vista.jpg",
+    "grande": "fotos/web/2026-09-03_sala-vista.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:27:41",
+   "tipo": "foto",
+   "arquivo": "IMG_2746.HEIC",
+   "descricao": "Sala com vista (variação)",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMSTUotMUTeWlvu3WyeXT2M59Jhiuf8v5tbeA6H"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:27:44",
+   "tipo": "foto",
+   "arquivo": "IMG_2747.HEIC",
+   "descricao": "Sala com vista (variação)",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPpup8Us3DpgZLGUbpceBt2COV-11Ckg_eIswga"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:27:45",
+   "tipo": "foto",
+   "arquivo": "IMG_2748.HEIC",
+   "descricao": "Sala com vista (variação)",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPIVR5SEOgzXHqI0-z5XsqR-9trmsUN8eHm0Rd-"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:34:19",
+   "tipo": "foto",
+   "arquivo": "IMG_2749.HEIC",
+   "descricao": "Selfie da galera na varanda, fim de tarde",
+   "google_fotos": "https://photos.google.com/photo/AF1QipNfU4s6YfK3H-3757U1KIfB--3Whj-Wi4mVh3zQ",
+   "web": {
+    "nome": "2026-09-03_varanda-selfie",
+    "mini": "fotos/mini/2026-09-03_varanda-selfie.jpg",
+    "grande": "fotos/web/2026-09-03_varanda-selfie.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:57:04",
+   "tipo": "video",
+   "arquivo": "IMG_2751.MOV",
+   "descricao": "Resenha na varanda",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOJose-2OY6I_XVvHRZYsxgdSRWWAeQnJKOryZQ",
+   "duracao_s": 75.2,
+   "web": {
+    "nome": "2026-09-03_varanda-resenha",
+    "mini": "fotos/mini/2026-09-03_varanda-resenha.jpg",
+    "grande": "fotos/web/2026-09-03_varanda-resenha.jpg",
+    "frame": 0.8
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:58:55",
+   "tipo": "video",
+   "arquivo": "IMG_2752.MOV",
+   "descricao": "Clipe de 1s, sem conteúdo",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMh7ceISXDyGHJZlcRt_BCwYXTT83XBElgxv-Vl",
+   "duracao_s": 0.9,
+   "fora_da_pagina": "sem conteúdo"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "17:58:59",
+   "tipo": "foto",
+   "arquivo": "IMG_2753.HEIC",
+   "descricao": "Pôr do sol na varanda, gente trabalhando",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPn68VCb1kFVxY8Sm5POxlWnjJKUY7EaN9Fcqfw",
+   "web": {
+    "nome": "2026-09-03_por-do-sol",
+    "mini": "fotos/mini/2026-09-03_por-do-sol.jpg",
+    "grande": "fotos/web/2026-09-03_por-do-sol.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "19:38:48",
+   "tipo": "video",
+   "arquivo": "IMG_2756.MOV",
+   "descricao": "Chegada à noite, rua e prédio",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMafylaamZE37ceFmimmDGtQmrhrtsQkyQD2c3h",
+   "duracao_s": 38.0
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "19:57:21",
+   "tipo": "foto",
+   "arquivo": "IMG_2757.HEIC",
+   "descricao": "Churrasco na cozinha",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMlSaBe3_TUm7vrXIHfZh8Z3j3j66q7JguKqjac",
+   "web": {
+    "nome": "2026-09-03_churrasco",
+    "mini": "fotos/mini/2026-09-03_churrasco.jpg",
+    "grande": "fotos/web/2026-09-03_churrasco.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "21:34:26",
+   "tipo": "video",
+   "arquivo": "IMG_2758.MOV",
+   "descricao": "Vídeo tremido, rosto de perto",
+   "google_fotos": "https://photos.google.com/photo/AF1QipMMce23lBylL6sf-zgLIkypuJcyNM0laa7ptepq",
+   "duracao_s": 21.7,
+   "fora_da_pagina": "tremido"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "22:01:58",
+   "tipo": "video",
+   "arquivo": "IMG_2759.MOV",
+   "descricao": "Galera na cozinha à noite",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPVpb1c1CHgISzq0ALttjQ4i4bgxEH6nyp2utfX",
+   "duracao_s": 76.5,
+   "web": {
+    "nome": "2026-09-03_cozinha",
+    "mini": "fotos/mini/2026-09-03_cozinha.jpg",
+    "grande": "fotos/web/2026-09-03_cozinha.jpg",
+    "frame": 0.5
+   }
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "22:03:59",
+   "tipo": "foto",
+   "arquivo": "IMG_2760.HEIC",
+   "descricao": "Sala à noite",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOSRu0hE56xu-Svff_yxHDr6NjIASCB5DKoqugv"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "22:04:00",
+   "tipo": "foto",
+   "arquivo": "IMG_2761.HEIC",
+   "descricao": "Balcão da cozinha à noite",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOXUtePXqM-NcIQl3PBOuO0f5goE_oQs2YkGavi",
+   "fora_da_pagina": "reserva: a grade da 1ª edição fecha em 7"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "22:31:36",
+   "tipo": "video",
+   "arquivo": "IMG_2762.MOV",
+   "descricao": "Clipe de 1s escuro",
+   "google_fotos": "https://photos.google.com/photo/AF1QipNB1YtansBpCxFnQmflU7aIEv0_8YubYb5aBf0S",
+   "duracao_s": 1.3,
+   "fora_da_pagina": "sem conteúdo"
+  },
+  {
+   "edicao": "2026-09-03",
+   "data": "03/09/2026",
+   "hora": "23:21:52",
+   "tipo": "video",
+   "arquivo": "IMG_2763.MOV",
+   "descricao": "Brincadeira com a panela",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOlgQuoLBbm9Z-cODfRAZAKd-Y8VGZZUmyoAEv-",
+   "duracao_s": 12.3
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "14:20:03",
+   "tipo": "foto",
+   "arquivo": "IMG_3031.HEIC",
+   "descricao": "Entrada da casa",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOZ4yORyQu45KfEIzFdNWGiKn3sjAUeKI9eGVxC",
+   "web": {
+    "nome": "2026-09-18_entrada",
+    "mini": "fotos/mini/2026-09-18_entrada.jpg",
+    "grande": "fotos/web/2026-09-18_entrada.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "14:20:05",
+   "tipo": "video",
+   "arquivo": "IMG_3032.MOV",
+   "descricao": "Chegada de carro",
+   "google_fotos": "https://photos.google.com/photo/AF1QipO1o07Kg5QfbIS7pnWA--M2CgJ6uO8ZvzLyPZUM",
+   "duracao_s": 12.7,
+   "fora_da_pagina": "placa do carro aparece"
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "14:20:33",
+   "tipo": "video",
+   "arquivo": "IMG_3033.MOV",
+   "descricao": "Chegada de carro",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOUyDR4QbYS8SOgEfoc3Mwhmz56nnyhWILNb0Iw",
+   "duracao_s": 32.4,
+   "fora_da_pagina": "placa do carro aparece"
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "14:21:38",
+   "tipo": "video",
+   "arquivo": "IMG_3034.MOV",
+   "descricao": "Tour pela casa",
+   "google_fotos": "https://photos.google.com/photo/AF1QipNQuOqNQBVAgfmGDkIXCEgumGRHBMluN8brSehI",
+   "duracao_s": 78.3
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "15:09:49",
+   "tipo": "foto",
+   "arquivo": "10291F1A-B7BB-48E1-B18B-82B1F0F33F8D.jpg",
+   "descricao": "Galera trabalhando na área gourmet, piscina na frente",
+   "google_fotos": "https://photos.google.com/photo/AF1QipODjSxYoABkY36RGFAEwPlkpkEtxmCvzTtUKyoF",
+   "web": {
+    "nome": "2026-09-18_piscina-trabalho",
+    "mini": "fotos/mini/2026-09-18_piscina-trabalho.jpg",
+    "grande": "fotos/web/2026-09-18_piscina-trabalho.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "16:00:49",
+   "tipo": "video",
+   "arquivo": "IMG_3037.MOV",
+   "descricao": "Trabalho no notebook, depoimento",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPBiapgD5aJ3Hcqpcj5nhw1doLuBosDZ_6uPmC3",
+   "duracao_s": 184.3,
+   "fora_da_pagina": "tela com dado de trabalho"
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "16:22:09",
+   "tipo": "video",
+   "arquivo": "IMG_3039.MOV",
+   "descricao": "Casa e deck",
+   "google_fotos": "https://photos.google.com/photo/AF1QipO9gzDxgdZ9Z94IOPzeu00Z16I-1dT-2hZlhdwU",
+   "duracao_s": 44.2,
+   "web": {
+    "nome": "2026-09-18_casa",
+    "mini": "fotos/mini/2026-09-18_casa.jpg",
+    "grande": "fotos/web/2026-09-18_casa.jpg",
+    "frame": 0.2
+   }
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "17:16:17",
+   "tipo": "foto",
+   "arquivo": "IMG_3040.HEIC",
+   "descricao": "Cookie do lanche",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPWEicH3mlP3flymo5K-u5MG1uUlyvOMVR7tgcR"
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "17:56:21",
+   "tipo": "foto",
+   "arquivo": "IMG_3041.HEIC",
+   "descricao": "Casa com a piscina, galera na varanda",
+   "google_fotos": "https://photos.google.com/photo/AF1QipNZ9G87PNinukZz2n49x-f6zo2dMcEbS1x25fmJ",
+   "web": {
+    "nome": "2026-09-18_casa-piscina",
+    "mini": "fotos/mini/2026-09-18_casa-piscina.jpg",
+    "grande": "fotos/web/2026-09-18_casa-piscina.jpg"
+   }
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "17:56:23",
+   "tipo": "video",
+   "arquivo": "IMG_3042.MOV",
+   "descricao": "Galera no balcão da área gourmet",
+   "google_fotos": "https://photos.google.com/photo/AF1QipPO6QIBqnH88h3AJCOFGwY5xB1LPpzM1b6iCs4G",
+   "duracao_s": 6.5,
+   "web": {
+    "nome": "2026-09-18_area-gourmet",
+    "mini": "fotos/mini/2026-09-18_area-gourmet.jpg",
+    "grande": "fotos/web/2026-09-18_area-gourmet.jpg",
+    "frame": 0.2
+   }
+  },
+  {
+   "edicao": "2026-09-18",
+   "data": "18/09/2026",
+   "hora": "22:23:52",
+   "tipo": "video",
+   "arquivo": "IMG_3043.MOV",
+   "descricao": "Resenha da noite, panela rodando",
+   "google_fotos": "https://photos.google.com/photo/AF1QipOt1cI5782ivb-KpYemvb3EfXfWBTGbthZXDZT9",
+   "duracao_s": 133.8,
+   "web": {
+    "nome": "2026-09-18_resenha",
+    "mini": "fotos/mini/2026-09-18_resenha.jpg",
+    "grande": "fotos/web/2026-09-18_resenha.jpg",
+    "frame": 0.2
+   }
+  }
+ ]
+}
