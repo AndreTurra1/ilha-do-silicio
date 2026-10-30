@@ -2,16 +2,16 @@
 """
 Soma ao acervo o que o webhook capturou desde a última rodada, e refecha o .enc.
 
-Fluxo: decifra o acervo atual -> pergunta ao Supabase o que veio DEPOIS da
+Fluxo: decifra o acervo atual -> pergunta à caixa do hub o que veio DEPOIS da
 última mensagem que ele tem -> mescla -> cifra de volta. O repositório nunca
 guarda o acervo em claro, nem por um instante: o JSON intermediário mora fora
 da pasta do repo e é apagado no fim.
 
-De onde vem o dado novo: `atlas_fact_wpp_mensagem` do Supabase da H2Jobs, onde
-o webhook `zapi-mensagens` grava o grupo desde 20/08/2026 (allowlist com
-`papel: "acervo"`, que existe pra deixar claro que este chat não alimenta NADA
-da H2Jobs). É provisório: quando a Ilha tiver instância Z-API própria, só esta
-função muda de fonte.
+De onde vem o dado novo: a CAIXA do hub zap-turra (desde 29/10/2026). O hub recebe
+o webhook do WhatsApp pessoal do Turra e guarda as mensagens deste grupo numa caixa
+só da Ilha; aqui se busca com a chave da Ilha em ~/.ilha-zap (ZAP_HUB_URL e
+ZAP_HUB_CHAVE, fora do repo). De 20/08 a 29/10 o grupo vinha do Supabase de outra
+operação; isso acabou e o acervo já tem tudo até a virada.
 
 Dedupe: o export do WhatsApp não tem id de mensagem, o webhook tem. Então a
 chave de igualdade é (dia, hora até o minuto, autor, texto), que é o que as duas
@@ -36,7 +36,7 @@ AQUI = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(AQUI)
 ENC = os.path.join(REPO, "acervo", "dados.enc")
 GRUPO = "120363427898397650-group"
-DOTENV = os.path.expanduser("~/Downloads/H2JOBS/GITHUB H2JOBS/h2jobs-atlas/.env.local")
+DOTENV = os.path.expanduser("~/.ilha-zap")
 BRT = datetime.timezone(datetime.timedelta(hours=-3))
 
 # mesma ordem de TIPOS do build_acervo.py
@@ -56,23 +56,47 @@ def env():
     return e
 
 
-def supabase(desde):
+# payload da Z-API -> tipo, igual ao que o webhook gravava antes (o dedupe depende disso)
+MIDIAS = [("image", "imagem"), ("video", "video"), ("audio", "audio"),
+          ("document", "documento"), ("sticker", "outro")]
+
+
+def conteudo(p):
+    if isinstance(p.get("text"), dict):
+        return "texto", p["text"].get("message")
+    for k in ("buttonsResponseMessage", "listResponseMessage"):
+        if isinstance(p.get(k), dict):
+            return "texto", p[k].get("message") or p[k].get("title")
+    for k, tipo in MIDIAS:
+        if isinstance(p.get(k), dict):
+            m = p[k]
+            return tipo, m.get("caption") or m.get("title") or m.get("documentTitle")
+    return "outro", None
+
+
+def hub(desde):
+    """Mensagens do grupo na caixa do hub desde `desde` (ISO), no formato das linhas antigas."""
     e = env()
-    # o .env.local do Atlas nomeia como NEXT_PUBLIC_ (é o front que consome); a
-    # service role key não tem prefixo público, e é ela que enxerga a tabela com RLS
-    base = e.get("SUPABASE_URL") or e["NEXT_PUBLIC_SUPABASE_URL"]
-    url = base.rstrip("/") + "/rest/v1/atlas_fact_wpp_mensagem?" + urllib.parse.urlencode({
-        "select": "ocorrido_em,dia,autor_nome,texto,tipo,de_mim",
-        "chat_id": f"eq.{GRUPO}",
-        "ocorrido_em": f"gte.{desde}",
-        "order": "ocorrido_em.asc",
-        "limit": "5000",
-    })
-    req = urllib.request.Request(url)
-    req.add_header("apikey", e["SUPABASE_SERVICE_ROLE_KEY"])
-    req.add_header("Authorization", "Bearer " + e["SUPABASE_SERVICE_ROLE_KEY"])
+    ms = int(datetime.datetime.fromisoformat(desde).timestamp() * 1000)
+    req = urllib.request.Request(
+        e["ZAP_HUB_URL"].rstrip("/") + f"/caixa?desde={ms}",
+        headers={"Authorization": "Bearer " + e["ZAP_HUB_CHAVE"],
+                 # a Cloudflare barra o User-Agent padrão do Python (erro 1010)
+                 "User-Agent": "ilha-acervo/1"})
     with urllib.request.urlopen(req, timeout=90) as r:
-        return json.loads(r.read().decode())
+        payloads = json.loads(r.read().decode())["mensagens"]
+    linhas = []
+    for p in payloads:
+        if p.get("type") and p["type"] != "ReceivedCallback":
+            continue
+        if p.get("isNewsletter") or p.get("isStatusReply"):
+            continue
+        n = int(p.get("momment") or 0)
+        quando = datetime.datetime.fromtimestamp((n if n >= 1e12 else n * 1000) / 1000, datetime.timezone.utc)
+        tipo, texto = conteudo(p)
+        linhas.append({"ocorrido_em": quando.isoformat(), "autor_nome": p.get("senderName") or p.get("chatName"),
+                       "texto": texto, "tipo": tipo, "de_mim": p.get("fromMe") is True})
+    return linhas
 
 
 def canonizar(d):
@@ -129,8 +153,8 @@ def main():
         # última mensagem que o acervo já tem, em ISO, pra pedir só o que veio depois
         ultimo = max((m[0], m[1]) for m in d["msgs"])
         desde = f"{ultimo[0]}T{ultimo[1]}:00-03:00"
-        novas = supabase(desde)
-        print(f"acervo tem {len(d['msgs'])} até {ultimo[0]} {ultimo[1]}; Supabase devolveu {len(novas)}")
+        novas = hub(desde)
+        print(f"acervo tem {len(d['msgs'])} até {ultimo[0]} {ultimo[1]}; hub devolveu {len(novas)}")
 
         vistas = {(m[0], m[1], d["autores"][m[2]], m[3]) for m in d["msgs"]}
         ja_conhecidos = set(d["autores"])
@@ -173,7 +197,7 @@ def main():
         reais = [m for m in d["msgs"] if TIPOS[m[4]] != "sistema"]
         dias = sorted({m[0] for m in reais})
         d["gerado_em"] = datetime.datetime.now().astimezone().isoformat(timespec="seconds")
-        d["fonte"] = "export do WhatsApp + webhook zapi-mensagens"
+        d["fonte"] = "export do WhatsApp + webhook (hub zap-turra desde 29/10/2026)"
         d["resumo"] = {"total": len(d["msgs"]), "uteis": len(reais), "pessoas": len(d["autores"]),
                        "primeiro_dia": dias[0], "ultimo_dia": dias[-1], "dias": len(dias)}
 

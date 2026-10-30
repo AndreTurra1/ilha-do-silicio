@@ -68,5 +68,10 @@ rendeu — o grupo é de gente, não é ata de reunião.
 ## Se falhar
 
 Se a Z-API recusar o envio ou o sync quebrar, **não tenta de novo em loop**:
-avisa o Turra no privado dele (self-chat, número 5548991392889) em UMA mensagem
-dizendo o que quebrou. O grupo não precisa ver erro de robô.
+avisa o Turra no privado dele em UMA mensagem dizendo o que quebrou:
+grava o texto num arquivo e roda `python3 rotinas/enviar.py <arquivo> --para-turra`.
+O grupo não precisa ver erro de robô.
+
+O envio e o sync passam pelo hub zap-turra (chave da Ilha em `~/.ilha-zap`). Se o hub
+responder 401, a chave de lá não bate com o cadastro do hub; se responder erro 1010, o
+User-Agent do script sumiu.
